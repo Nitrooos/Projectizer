@@ -1,5 +1,5 @@
 #include "CMainWindow.hpp"
-#include "../MyXmlContentHandler.hpp"
+#include "ProjectXmlContentHandler.hpp"
 #include <QApplication>
 
 int main(int argc, char *argv[])
