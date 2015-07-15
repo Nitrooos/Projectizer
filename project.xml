@@ -1,5 +1,7 @@
-<Widgets>
-    <MyTableWidget 	id="widget1" width="100px" height="100px"></MyTableWidget>
-    <MyListWidget 	id="widget2" width="100px" height="100px"></MyListWidget>
-    <MyTabWidget 		id="widget3" width="100px" height="100px"></MyTabWidget>
-</Widgets>
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <name>Test project</name>
+    <type>C++</type>
+    <location>/home/bartosz/Documents/Projekty/ProjectizerQT/Projecizer/test_project</location>
+    <run_script>/home/bartosz/Documents/Projekty/ProjectizerQT/Projecizer/test_project/.project/.start.sh</run_script>
+</project>

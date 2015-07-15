@@ -1,6 +1,11 @@
 #include "CMainWindow.hpp"
-#include "ProjectXmlContentHandler.hpp"
+#include "CProjectXmlFileReader.hpp"
+
 #include <QApplication>
+#include <QFile>
+#include <QMessageBox>
+
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
@@ -10,16 +15,14 @@ int main(int argc, char *argv[])
 
     return app.exec();*/
 
-    QXmlSimpleReader *parser     = new QXmlSimpleReader();
-    MyXmlContentHandler *handler = new MyXmlContentHandler();
+    CProjectXmlFileReader *reader = new CProjectXmlFileReader();
 
-    parser->setContentHandler(handler);
-
-    std::cout<<	"Starting parsing"<< std::endl;
-
-    if (parser->parse(new QXmlInputSource(new QFile("../Projectizer/project.xml")))) {
-        std::cout << "Parsed Successfully!" << std::endl;
-    } else {
-        std::cout << "Parsing Failed..." << std::endl;
+    QString file_name = "../Projectizer/project.xml";
+    QFile file(file_name);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        std::cerr << "Cannot open read file: " << file_name.toStdString() << ": " << file.errorString().toStdString() << "\n";
+        return -1;
     }
+
+    return reader->read(&file);
 }
