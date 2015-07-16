@@ -2,6 +2,7 @@
 #define CPROJECTXMLFILEREADER_HPP
 
 #include <QXmlStreamReader>
+#include <QMap>
 
 class CProjectXmlFileReader {
     public:
@@ -18,6 +19,7 @@ class CProjectXmlFileReader {
         QString errorString() const;
 
         QXmlStreamReader xml_reader;
+        QMap<QString, QString> projectReadData;
 };
 
 #endif // CPROJECTXMLFILEREADER_HPP

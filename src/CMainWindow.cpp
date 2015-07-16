@@ -6,7 +6,6 @@ CMainWindow::CMainWindow(QWidget *parent) :
     ui(new Ui::CMainWindow)
 {
     ui->setupUi(this);
-
 }
 
 CMainWindow::~CMainWindow() {

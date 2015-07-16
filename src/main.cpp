@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
         std::cerr << "Cannot open read file: " << file_name.toStdString() << ": " << file.errorString().toStdString() << "\n";
         return -1;
     }
+    reader->read(&file);
 
-    return reader->read(&file);
+    return 0;
 }
