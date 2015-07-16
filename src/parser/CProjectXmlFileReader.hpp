@@ -1,10 +1,10 @@
 #ifndef CPROJECTXMLFILEREADER_HPP
 #define CPROJECTXMLFILEREADER_HPP
 
-#include <QXmlStreamReader>
+#include "AXmlFileReader.hpp"
 #include <QMap>
 
-class CProjectXmlFileReader {
+class CProjectXmlFileReader : public AXmlFileReader {
     public:
         CProjectXmlFileReader();
 
@@ -16,9 +16,8 @@ class CProjectXmlFileReader {
         void readTypeTag();
         void readLocationTag();
         void readRunScriptTag();
-        QString errorString() const;
 
-        QXmlStreamReader xml_reader;
+        QString errorString() const;
         QMap<QString, QString> projectReadData;
 };
 

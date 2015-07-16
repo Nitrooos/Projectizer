@@ -1,5 +1,5 @@
 #include "CMainWindow.hpp"
-#include "CProjectXmlFileReader.hpp"
+#include "parser/CProjectXmlFileReader.hpp"
 
 #include <QApplication>
 #include <QFile>
