@@ -2,28 +2,20 @@
 #include "parser/CProjectXmlFileReader.hpp"
 
 #include <QApplication>
-#include <QFile>
-#include <QMessageBox>
+#include <QElapsedTimer>
 
 #include <iostream>
 
-int main(int argc, char *argv[])
-{
-    /*QApplication app(argc, argv);
-    CMainWindow w;
-    w.show();
-
-    return app.exec();*/
-
-    CProjectXmlFileReader *reader = new CProjectXmlFileReader();
-
-    QString file_name = "../Projectizer/project.xml";
-    QFile file(file_name);
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        std::cerr << "Cannot open read file: " << file_name.toStdString() << ": " << file.errorString().toStdString() << "\n";
-        return -1;
+int main(int argc, char *argv[]) {
+    CProjectXmlFileReader reader("../Projectizer/project.xml");
+    QElapsedTimer timer;
+    timer.start();
+    if (reader.parse()) {
+        SProjectInfo p = reader.getParsedInformations();
+        quint64 nsecs = timer.nsecsElapsed();
+        std::cout << "Czas parsowania: " << nsecs/1000 << "us\n";
+        std::cout << p._name.toStdString() << " " << p._type.toStdString() << " " << p._location.toStdString() << " " << p._run_script.toStdString() << "\n";
     }
-    reader->read(&file);
 
     return 0;
 }

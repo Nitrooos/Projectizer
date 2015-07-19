@@ -11,10 +11,17 @@ class CProjectTypeXmlFileReader : public AXmlFileReader {
         CProjectTypeXmlFileReader();
 
         bool read(QIODevice *device);
+        void print();
     private:
         void readProjectTypeTag();
         void readTechnologiesTag();
         void readOptionsTag();
+        void readOptionTag();
+
+        void readOptionCheckboxTag();
+        void readOptionTextTag();
+        void readOptionRadioTag();
+        void readOptionSelectboxTag();
 
         void printProjectTypeInfo();
 
@@ -22,6 +29,8 @@ class CProjectTypeXmlFileReader : public AXmlFileReader {
             QString tag_name, tag_content;
             QXmlStreamAttributes attributes;
             QList<SXmlNode> children;
+
+            void print();
         };
 
         QList<SXmlNode> projectTypeData;

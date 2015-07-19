@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project_type>
+	<name>SFML game</name>
+	<technologies>
+		<technology>C++</technology>
+		<technology>SFML</technology>
+	</technologies>
+	<options>
+		<option type="checkbox">
+			<name>git_init</name>
+			<label>Init git repository</label>
+		</option>
+		<option type="radio">
+		    <name>abc</name>
+		    <values>
+		        <value>def</value>
+		        <value>ghi</value>
+		    <values>
+		</option>
+	</options>
+</project_type>

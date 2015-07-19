@@ -1,24 +1,26 @@
 #ifndef CPROJECTXMLFILEREADER_HPP
 #define CPROJECTXMLFILEREADER_HPP
 
-#include "AXmlFileReader.hpp"
-#include <QMap>
+#include <QString>
 
-class CProjectXmlFileReader : public AXmlFileReader {
+class QDomNode;
+
+using namespace std;
+
+struct SProjectInfo {
+    QString _name, _type, _location, _run_script;
+};
+
+class CProjectXmlFileReader {
     public:
-        CProjectXmlFileReader();
-
-        bool read(QIODevice *device);
+        CProjectXmlFileReader(QString file_name);
+        bool parse();
+        SProjectInfo getParsedInformations() const;
     private:
-        void readXML();
-        void readProjectTag();
-        void readNameTag();
-        void readTypeTag();
-        void readLocationTag();
-        void readRunScriptTag();
+        void parseNode(const QDomNode &node);
 
-        QString errorString() const;
-        QMap<QString, QString> projectReadData;
+        QString _file_name;
+        SProjectInfo _project_info;
 };
 
 #endif // CPROJECTXMLFILEREADER_HPP

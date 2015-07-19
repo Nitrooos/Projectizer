@@ -1,43 +1,47 @@
 #include "CProjectXmlFileReader.hpp"
 
-#include <iostream>
-#include <QSet>
+#include <QDomDocument>
+#include <QFile>
 
-CProjectXmlFileReader::CProjectXmlFileReader() { }
+CProjectXmlFileReader::CProjectXmlFileReader(QString file_name) : _file_name(file_name) { }
 
-bool CProjectXmlFileReader::read(QIODevice *device) {
-    xml_reader.setDevice(device);
-    readXML();
-    return !xml_reader.error();
+bool CProjectXmlFileReader::parse() {
+    QDomDocument document;
+    QFile file(_file_name);
+
+    if (!file.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+    if (!document.setContent(&file)) {
+        file.close();
+        return false;
+    }
+    file.close();
+
+    QDomElement root = document.documentElement();
+    QDomNodeList root_children = root.childNodes();
+    for (int i = 0; i < root_children.size(); ++i) {
+        parseNode(root_children.item(i));
+    }
+
+    return true;
 }
 
-void CProjectXmlFileReader::readXML() {
-    bool project_tag_read = false;
-    while (!project_tag_read && xml_reader.readNextStartElement()) {
-        if (xml_reader.name() == "project") {
-            readProjectTag();
-            project_tag_read = true;
-        } else {
-            xml_reader.skipCurrentElement();
+SProjectInfo CProjectXmlFileReader::getParsedInformations() const {
+    return _project_info;
+}
+
+void CProjectXmlFileReader::parseNode(const QDomNode &node) {
+    if (node.isElement()) {
+        QDomElement element = node.toElement();
+        if (element.nodeName() == "name") {
+            _project_info._name = element.text();
+        } else if (element.nodeName() == "type") {
+            _project_info._type = element.text();
+        } else if (element.nodeName() == "location") {
+            _project_info._location = element.text();
+        } else if (element.nodeName() == "run_script") {
+            _project_info._run_script = element.text();
         }
     }
-}
-
-void CProjectXmlFileReader::readProjectTag() {
-    const QSet<QString> VALID_TAGS_INSIDE_PROJECT = {"name", "type", "location", "run_script"};
-
-    while (xml_reader.readNextStartElement()) {
-        if (VALID_TAGS_INSIDE_PROJECT.find(xml_reader.name().toString()) != VALID_TAGS_INSIDE_PROJECT.end()) {
-            projectReadData[xml_reader.name().toString()] = xml_reader.readElementText();
-        } else {
-            xml_reader.skipCurrentElement();
-        }
-    }
-}
-
-QString CProjectXmlFileReader::errorString() const {
-    return QObject::tr("%1\nLine %2, column %3")
-                .arg(xml_reader.errorString())
-                .arg(xml_reader.lineNumber())
-                .arg(xml_reader.columnNumber());
 }
