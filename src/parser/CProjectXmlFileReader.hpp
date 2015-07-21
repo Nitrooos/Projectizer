@@ -1,6 +1,7 @@
 #ifndef CPROJECTXMLFILEREADER_HPP
 #define CPROJECTXMLFILEREADER_HPP
 
+#include "AXmlFileReader.hpp"
 #include <QString>
 
 class QDomNode;
@@ -11,15 +12,13 @@ struct SProjectInfo {
     QString _name, _type, _location, _run_script;
 };
 
-class CProjectXmlFileReader {
+class CProjectXmlFileReader : public AXmlFileReader {
     public:
         CProjectXmlFileReader(QString file_name);
-        bool parse();
         SProjectInfo getParsedInformations() const;
-    private:
+    protected:
         void parseNode(const QDomNode &node);
-
-        QString _file_name;
+    private:
         SProjectInfo _project_info;
 };
 

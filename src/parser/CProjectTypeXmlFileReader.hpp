@@ -2,38 +2,27 @@
 #define CPROJECTTYPEXMLFILEREADER_HPP
 
 #include "AXmlFileReader.hpp"
+#include "SOption.hpp"
 
 #include <QList>
-#include <QString>
+
+struct SProjectTypeInfo {
+    QString _name;
+    QList<QString> _technologies;
+    QList<SOption*> _options;
+};
 
 class CProjectTypeXmlFileReader : public AXmlFileReader {
     public:
-        CProjectTypeXmlFileReader();
-
-        bool read(QIODevice *device);
-        void print();
+        CProjectTypeXmlFileReader(QString file_name);
+        SProjectTypeInfo getProjectTypeInfo() const;
+    protected:
+        void parseNode(const QDomNode &node);
     private:
-        void readProjectTypeTag();
-        void readTechnologiesTag();
-        void readOptionsTag();
-        void readOptionTag();
+        void readTechnologies(const QDomNodeList &node_list);
+        void readOptions(const QDomNodeList &node_list);
 
-        void readOptionCheckboxTag();
-        void readOptionTextTag();
-        void readOptionRadioTag();
-        void readOptionSelectboxTag();
-
-        void printProjectTypeInfo();
-
-        struct SXmlNode {
-            QString tag_name, tag_content;
-            QXmlStreamAttributes attributes;
-            QList<SXmlNode> children;
-
-            void print();
-        };
-
-        QList<SXmlNode> projectTypeData;
+        SProjectTypeInfo _project_type_info;
 };
 
 #endif // CPROJECTTYPEXMLFILEREADER_HPP

@@ -1,13 +1,19 @@
 #ifndef AXMLFILEREADER_HPP
 #define AXMLFILEREADER_HPP
 
-#include <QXmlStreamReader>
+#include <QString>
+#include <QDomNode>
 
-class AXmlFileReader : public QXmlStreamReader {
+class AXmlFileReader {
     public:
-        virtual bool read(QIODevice *device) = 0;
+        AXmlFileReader(QString file_name)
+            : _file_name(file_name) {}
+
+        virtual bool parse();
     protected:
-        QXmlStreamReader xml_reader;
+        virtual void parseNode(const QDomNode &node) = 0;
+
+        QString _file_name;
 };
 
 #endif // AXMLFILEREADER_HPP
