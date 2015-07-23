@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
         SProjectTypeInfo p = reader.getProjectTypeInfo();
         quint64 nsecs = timer.nsecsElapsed();
         std::cout << "Czas parsowania: " << nsecs/1000 << "us\n";
-        std::cout << p._name.toStdString() << "\n";
+        std::cout << p.print().toStdString();
     }
 
     return 0;

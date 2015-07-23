@@ -3,8 +3,6 @@
 #include <QDomDocument>
 #include <QFile>
 
-#include <iostream>
-
 bool AXmlFileReader::parse() {
     QDomDocument document;
     QFile file(_file_name);

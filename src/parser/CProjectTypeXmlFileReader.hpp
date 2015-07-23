@@ -2,14 +2,16 @@
 #define CPROJECTTYPEXMLFILEREADER_HPP
 
 #include "AXmlFileReader.hpp"
-#include "SOption.hpp"
+#include "COption.hpp"
 
 #include <QList>
 
 struct SProjectTypeInfo {
     QString _name;
     QList<QString> _technologies;
-    QList<SOption*> _options;
+    QList<COption*> _options;
+
+    QString print() const;
 };
 
 class CProjectTypeXmlFileReader : public AXmlFileReader {

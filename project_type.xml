@@ -6,15 +6,15 @@
 		<technology>SFML</technology>
 	</technologies>
 	<options>
-		<option type="checkbox">
+        <option type="checkbox" checked="true">
 			<name>git_init</name>
 			<label>Init git repository</label>
 		</option>
 		<option type="radio">
 		    <name>abc</name>
 		    <values>
-		        <value>def</value>
-		        <value>ghi</value>
+                <value id="a" default="true">def</value>
+                <value id="b">ghi</value>
             </values>
 		</option>
 	</options>
