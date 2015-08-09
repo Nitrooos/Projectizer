@@ -89,7 +89,9 @@ void COptionSelectable::fillValue(const QDomNode &node) {
                 label = value_element.toElement().text();
         bool is_default = false;
 
-        if (value_element.attributes().contains("default") && value_element.attributes().namedItem("default").toAttr().value() == "true") {
+        if (value_element.attributes().contains("default") &&
+            value_element.attributes().namedItem("default").toAttr().value() == "true")
+        {
             is_default = true;
         }
 
