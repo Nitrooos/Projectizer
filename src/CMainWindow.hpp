@@ -14,6 +14,8 @@ class CMainWindow : public QMainWindow {
         ~CMainWindow();
 
     private:
+        void centerWindow();
+
         Ui::CMainWindow *ui;
 };
 

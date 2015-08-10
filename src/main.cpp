@@ -1,6 +1,6 @@
-#include "parser/CProjectXmlFileReader.hpp"
-#include "parser/CProjectTypeXmlFileReader.hpp"
+#include "CMainWindow.hpp"
 
+#include <QApplication>
 #include <QElapsedTimer>
 
 #include <iostream>
@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
         std::cout << p._name.toStdString() << " " << p._type.toStdString() << " " << p._location.toStdString() << " " << p._run_script.toStdString() << "\n";
     }*/
 
-    CProjectTypeXmlFileReader reader("../Projectizer/project_type.xml");
+    /*CProjectTypeXmlFileReader reader("../Projectizer/project_type.xml");
     QElapsedTimer timer;
     timer.start();
     if (reader.parse()) {
@@ -24,7 +24,11 @@ int main(int argc, char *argv[]) {
         quint64 nsecs = timer.nsecsElapsed();
         std::cout << "Czas parsowania: " << nsecs/1000 << "us\n";
         std::cout << p.print().toStdString();
-    }
+    }*/
 
-    return 0;
+    QApplication app(argc, argv);
+    CMainWindow window;
+    window.show();
+
+    return app.exec();
 }
