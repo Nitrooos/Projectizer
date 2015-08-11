@@ -9,6 +9,7 @@ CMainWindow::CMainWindow(QWidget *parent) :
     ui(new Ui::CMainWindow)
 {
     ui->setupUi(this);
+    this->hideRemoveAndConfigureButtons();
     this->centerWindow();
 
     ProjectInfo info;
@@ -31,4 +32,9 @@ void CMainWindow::centerWindow() {
         screenHeight = wid.screen()->height();
 
     this->setGeometry((screenWidth/2) - (width/2), (screenHeight/2) - (height/2), width, height);
+}
+
+void CMainWindow::hideRemoveAndConfigureButtons() const {
+    ui->removeButton->hide();
+    ui->configureButton->hide();
 }

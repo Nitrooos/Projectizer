@@ -105,7 +105,7 @@ Qt::ItemFlags CProjectModel::flags(const QModelIndex &index) const {
         return Qt::ItemIsEnabled;
     }
 
-    return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
+    return QAbstractTableModel::flags(index);
 }
 
 ProjectInfo CProjectModel::getList() {

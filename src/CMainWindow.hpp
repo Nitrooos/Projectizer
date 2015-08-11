@@ -15,6 +15,7 @@ class CMainWindow : public QMainWindow {
 
     private:
         void centerWindow();
+        void hideRemoveAndConfigureButtons() const;
 
         Ui::CMainWindow *ui;
 };
