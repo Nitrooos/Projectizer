@@ -2,7 +2,7 @@
 
 CProjectModel::CProjectModel(QObject *parent) : QAbstractTableModel(parent) { }
 
-CProjectModel::CProjectModel(const ProjectInfo &info, QObject *parent) : QAbstractTableModel(parent), info(info) { }
+CProjectModel::CProjectModel(const ProjectInfoList &info, QObject *parent) : QAbstractTableModel(parent), info(info) { }
 
 int CProjectModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
@@ -29,7 +29,7 @@ QVariant CProjectModel::data(const QModelIndex &index, int role) const {
         if (index.column() == 0) {
             return pair.first;
         } else if (index.column() == 1) {
-            return pair.second.join(", ");
+            return pair.second;
         }
     }
 
@@ -44,7 +44,7 @@ QVariant CProjectModel::headerData(int section, Qt::Orientation orientation, int
     if (orientation == Qt::Horizontal) {
         switch (section) {
             case 0:  return tr("Name");
-            case 1:  return tr("Technologies");
+            case 1:  return tr("Technology");
             default: return QVariant();
         }
     }
@@ -57,7 +57,7 @@ bool CProjectModel::insertRows(int position, int rows, const QModelIndex &index)
     beginInsertRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row) {
-        QPair<QString, QStringList> pair(" ", QStringList());
+        ProjectRowInfo pair(" ", " ");
         info.insert(position, pair);
     }
 
@@ -81,12 +81,12 @@ bool CProjectModel::setData(const QModelIndex &index, const QVariant &value, int
     if (index.isValid() && role == Qt::EditRole) {
         int row = index.row();
 
-        QPair<QString, QStringList> p = info.value(row);
+        ProjectRowInfo p = info.value(row);
 
         if (index.column() == 0) {
             p.first = value.toString();
         } else if (index.column() == 1) {
-            p.second = value.toStringList();
+            p.second = value.toString();
         } else {
             return false;
         }
@@ -108,6 +108,6 @@ Qt::ItemFlags CProjectModel::flags(const QModelIndex &index) const {
     return QAbstractTableModel::flags(index);
 }
 
-ProjectInfo CProjectModel::getList() {
+ProjectInfoList CProjectModel::getList() {
     return info;
 }

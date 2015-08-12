@@ -2,6 +2,7 @@
 #include "CConstants.hpp"
 #include "model/CProjectModel.hpp"
 #include "file_finder/CXMLFileFinder.hpp"
+#include "parser/CProjectXmlFileReader.hpp"
 #include "ui_MainWindow.h"
 
 #include <QKeyEvent>
@@ -15,10 +16,6 @@ CMainWindow::CMainWindow(QWidget *parent) :
     this->hideRemoveAndConfigureButtons();
     this->centerWindow();
     this->fillTableViewWithSavedProjectsData();
-
-    //ProjectInfo info;
-    //info.push_back(ProjectRowInfo{"name", {"tech1", "tech2"}});
-    //ui->tableView->setModel(new CProjectModel(info, this));
 }
 
 CMainWindow::~CMainWindow() {
@@ -53,9 +50,18 @@ void CMainWindow::hideRemoveAndConfigureButtons() const {
     ui->configureButton->hide();
 }
 
-#include <iostream>
 void CMainWindow::fillTableViewWithSavedProjectsData() {
-    QStringList saved_project_files = CXMLFileFinder::getSavedProjectsXMLFiles(
+    QStringList saved_projects_files = CXMLFileFinder::getSavedProjectsXMLFiles(
                 CConstant::getProjectizerMainFolder() + CConstant::getSavedProjectsFolder());
-    std::cout << saved_project_files.join(", ").toStdString() << "\n";
+
+    ProjectInfoList saved_projects_info_list;
+    foreach (const QString &file_name, saved_projects_files) {
+        CProjectXmlFileReader reader(file_name);
+        reader.parse();
+        SProjectInfo saved_project_info = reader.getParsedInformations();
+
+        saved_projects_info_list.push_back(ProjectRowInfo{saved_project_info._name, saved_project_info._type});
+    }
+
+    ui->tableView->setModel(new CProjectModel(saved_projects_info_list, this));
 }
