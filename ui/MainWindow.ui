@@ -17,7 +17,7 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QTableView" name="tableView">
+   <widget class="CSavedProjectsTableView" name="tableView">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -114,6 +114,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>CSavedProjectsTableView</class>
+   <extends>QTableView</extends>
+   <header>src/view/CSavedProjectsTableView.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

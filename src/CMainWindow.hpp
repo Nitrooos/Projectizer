@@ -17,7 +17,6 @@ class CMainWindow : public QMainWindow {
         void keyPressEvent(QKeyEvent *event);
         void centerWindow();
         void hideRemoveAndConfigureButtons() const;
-        void fillTableViewWithSavedProjectsData();
 
         Ui::CMainWindow *ui;
 };
