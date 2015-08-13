@@ -14,7 +14,9 @@ class CMainWindow : public QMainWindow {
         ~CMainWindow();
 
     private:
+        void keyPressEvent(QKeyEvent *event);
         void centerWindow();
+        void hideRemoveAndConfigureButtons() const;
 
         Ui::CMainWindow *ui;
 };
