@@ -13,6 +13,10 @@ CMainWindow::CMainWindow(QWidget *parent) :
     ui(new Ui::CMainWindow)
 {
     ui->setupUi(this);
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(close()));
+
     this->hideRemoveAndConfigureButtons();
     this->centerWindow();
     this->fillTableViewWithSavedProjectsData();
@@ -50,6 +54,7 @@ void CMainWindow::hideRemoveAndConfigureButtons() const {
     ui->configureButton->hide();
 }
 
+// fill and set model for table view (<project name, technology> row)
 void CMainWindow::fillTableViewWithSavedProjectsData() {
     QStringList saved_projects_files = CXMLFileFinder::getSavedProjectsXMLFiles(
                 CConstant::getProjectizerMainFolder() + CConstant::getSavedProjectsFolder());
