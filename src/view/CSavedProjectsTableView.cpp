@@ -4,9 +4,10 @@
 #include "src/CConstants.hpp"
 #include "src/parser/CProjectXmlFileReader.hpp"
 
+#include <QProcess>
 #include <QStringList>
 
-CSavedProjectsTableView::CSavedProjectsTableView(QWidget *parent) : QTableView(parent) {
+CSavedProjectsTableView::CSavedProjectsTableView(QWidget *parent) : QTableView(parent), _model(nullptr) {
     this->setup();
 }
 
@@ -25,20 +26,28 @@ void CSavedProjectsTableView::fillWithSavedProjectsData() {
         CConstant::getProjectizerMainFolder() + CConstant::getSavedProjectsFolder()
     );
 
-    ProjectInfoList saved_projects_info_list;
+    QList<SProjectInfo> saved_projects_info_list;
     foreach (const QString &file_name, saved_projects_files) {
         CProjectXmlFileReader reader(file_name);
         reader.parse();
         SProjectInfo saved_project_info = reader.getParsedInformations();
 
-        saved_projects_info_list.push_back(ProjectRowInfo{saved_project_info._name, saved_project_info._type});
+        saved_projects_info_list.push_back(saved_project_info);
     }
 
-    this->setModel(new CProjectModel(saved_projects_info_list, this));
+    this->_model = new CProjectModel(saved_projects_info_list, this);
+    this->setModel(_model);
 }
 
 #include <iostream>
 void CSavedProjectsTableView::onDoubleClick(QModelIndex index) {
     Q_UNUSED(index);
-    std::cout << "Siema\n";
+
+    SProjectInfo saved_project_info = this->_model->getList().at(index.row());
+
+    QProcess script_process;
+    script_process.setWorkingDirectory(saved_project_info._location);
+    script_process.start("/bin/bash " + saved_project_info._run_script);
+
+    script_process.waitForFinished();
 }

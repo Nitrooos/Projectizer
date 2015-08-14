@@ -1,6 +1,7 @@
 #ifndef CSAVEDPROJECTSTABLEVIEW_HPP
 #define CSAVEDPROJECTSTABLEVIEW_HPP
 
+#include "src/model/CProjectModel.hpp"
 #include <QTableView>
 
 class CSavedProjectsTableView : public QTableView {
@@ -12,6 +13,8 @@ class CSavedProjectsTableView : public QTableView {
     private:
         void setup();
         void fillWithSavedProjectsData();
+
+        CProjectModel *_model;
 };
 
 #endif // CSAVEDPROJECTSTABLEVIEW_HPP

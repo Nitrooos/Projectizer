@@ -1,15 +1,13 @@
 #ifndef CPROJECTMODEL_HPP
 #define CPROJECTMODEL_HPP
 
+#include "src/parser/CProjectXmlFileReader.hpp"
 #include <QAbstractTableModel>
-
-typedef QPair<QString, QString> ProjectRowInfo;
-typedef QList<ProjectRowInfo> ProjectInfoList;
 
 class CProjectModel : public QAbstractTableModel {
     public:
         CProjectModel(QObject *parent = 0);
-        CProjectModel(ProjectInfoList const& info, QObject *parent = 0);
+        CProjectModel(QList<SProjectInfo> const& saved_projects_info, QObject *parent = 0);
 
         int rowCount(const QModelIndex &parent) const;
         int columnCount(const QModelIndex &parent) const;
@@ -19,9 +17,9 @@ class CProjectModel : public QAbstractTableModel {
         bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole);
         bool insertRows(int position, int rows, const QModelIndex &index=QModelIndex());
         bool removeRows(int position, int rows, const QModelIndex &index=QModelIndex());
-        ProjectInfoList getList();
+        QList<SProjectInfo> getList();
     private:
-        ProjectInfoList info;
+        QList<SProjectInfo> saved_projects_info;
 };
 
 #endif // CPROJECTMODEL_HPP

@@ -2,11 +2,11 @@
 
 CProjectModel::CProjectModel(QObject *parent) : QAbstractTableModel(parent) { }
 
-CProjectModel::CProjectModel(const ProjectInfoList &info, QObject *parent) : QAbstractTableModel(parent), info(info) { }
+CProjectModel::CProjectModel(const QList<SProjectInfo> &info, QObject *parent) : QAbstractTableModel(parent), saved_projects_info(info) { }
 
 int CProjectModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
-    return info.size();
+    return saved_projects_info.size();
 }
 
 int CProjectModel::columnCount(const QModelIndex &parent) const {
@@ -19,17 +19,17 @@ QVariant CProjectModel::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
 
-    if (index.row() >= info.size() || index.row() < 0) {
+    if (index.row() >= saved_projects_info.size() || index.row() < 0) {
         return QVariant();
     }
 
     if (role == Qt::DisplayRole) {
-        ProjectRowInfo pair = info.at(index.row());
+        SProjectInfo project_info = saved_projects_info.at(index.row());
 
         if (index.column() == 0) {
-            return pair.first;
+            return project_info._name;
         } else if (index.column() == 1) {
-            return pair.second;
+            return project_info._type;
         }
     }
 
@@ -57,8 +57,8 @@ bool CProjectModel::insertRows(int position, int rows, const QModelIndex &index)
     beginInsertRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row) {
-        ProjectRowInfo pair(" ", " ");
-        info.insert(position, pair);
+        SProjectInfo project_info;
+        saved_projects_info.insert(position, project_info);
     }
 
     endInsertRows();
@@ -70,7 +70,7 @@ bool CProjectModel::removeRows(int position, int rows, const QModelIndex &index)
     beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row) {
-        info.removeAt(position);
+        saved_projects_info.removeAt(position);
     }
 
     endRemoveRows();
@@ -81,17 +81,17 @@ bool CProjectModel::setData(const QModelIndex &index, const QVariant &value, int
     if (index.isValid() && role == Qt::EditRole) {
         int row = index.row();
 
-        ProjectRowInfo p = info.value(row);
+        SProjectInfo p = saved_projects_info.value(row);
 
         if (index.column() == 0) {
-            p.first = value.toString();
+            p._name = value.toString();
         } else if (index.column() == 1) {
-            p.second = value.toString();
+            p._type = value.toString();
         } else {
             return false;
         }
 
-        info.replace(row, p);
+        saved_projects_info.replace(row, p);
         emit(dataChanged(index, index));
 
         return true;
@@ -108,6 +108,6 @@ Qt::ItemFlags CProjectModel::flags(const QModelIndex &index) const {
     return QAbstractTableModel::flags(index);
 }
 
-ProjectInfoList CProjectModel::getList() {
-    return info;
+QList<SProjectInfo> CProjectModel::getList() {
+    return saved_projects_info;
 }
