@@ -4,7 +4,7 @@
 #include "src/CConstants.hpp"
 #include "src/parser/CProjectXmlFileReader.hpp"
 
-#include <QProcess>
+#include <QMessageBox>
 #include <QStringList>
 
 CSavedProjectsTableView::CSavedProjectsTableView(QWidget *parent) : QTableView(parent), _model(nullptr) {
@@ -46,8 +46,29 @@ void CSavedProjectsTableView::onDoubleClick(QModelIndex index) {
     SProjectInfo saved_project_info = this->_model->getList().at(index.row());
 
     QProcess script_process;
+
+    QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(onProcessError(QProcess::ProcessError)));
+
     script_process.setWorkingDirectory(saved_project_info._location);
-    script_process.start("/bin/bash " + saved_project_info._run_script);
+    script_process.start(saved_project_info._run_script);
 
     script_process.waitForFinished();
+}
+
+void CSavedProjectsTableView::onProcessError(QProcess::ProcessError error) {
+    QMessageBox box;
+    switch (error) {
+        case QProcess::FailedToStart:
+            box.setText("The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.");
+            break;
+        case QProcess::Crashed:
+            box.setText("The process crashed some time after starting successfully.");
+            break;
+        case QProcess::UnknownError:
+        default:
+            box.setText("An unknown error occurred. This is the default return value of error().");
+            break;
+    }
+
+    box.exec();
 }
