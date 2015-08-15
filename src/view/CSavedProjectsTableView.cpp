@@ -5,6 +5,7 @@
 #include "src/parser/CProjectXmlFileReader.hpp"
 
 #include <QMessageBox>
+#include <QHeaderView>
 #include <QStringList>
 
 CSavedProjectsTableView::CSavedProjectsTableView(QWidget *parent) : QTableView(parent), _model(nullptr) {
@@ -14,6 +15,12 @@ CSavedProjectsTableView::CSavedProjectsTableView(QWidget *parent) : QTableView(p
 void CSavedProjectsTableView::setup() {
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->fillWithSavedProjectsData();
+
+    // porawki wizualne (ukrycie siatki, odpowiednie rozmiary kolumn, zablokowanie rozszerzania kolumn)
+    this->setColumnWidth(0, 200);
+    this->setColumnWidth(1, 149);
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
     connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onDoubleClick(QModelIndex)));
 
@@ -66,7 +73,7 @@ void CSavedProjectsTableView::onProcessError(QProcess::ProcessError error) {
             break;
         case QProcess::UnknownError:
         default:
-            box.setText("An unknown error occurred. This is the default return value of error().");
+            box.setText("An unknown error occurred.");
             break;
     }
 
