@@ -22,7 +22,7 @@ void CSavedProjectsTableView::setup() {
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
-    connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onDoubleClick(QModelIndex)));
+    connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(runProjectScript(QModelIndex)));
 
     this->show();
 }
@@ -47,14 +47,14 @@ void CSavedProjectsTableView::fillWithSavedProjectsData() {
 }
 
 #include <iostream>
-void CSavedProjectsTableView::onDoubleClick(QModelIndex index) {
+void CSavedProjectsTableView::runProjectScript(QModelIndex index) {
     Q_UNUSED(index);
 
     SProjectInfo saved_project_info = this->_model->getList().at(index.row());
 
     QProcess script_process;
 
-    QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(onProcessError(QProcess::ProcessError)));
+    QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleProcessError(QProcess::ProcessError)));
 
     script_process.setWorkingDirectory(saved_project_info._location);
     script_process.start(saved_project_info._run_script);
@@ -62,7 +62,21 @@ void CSavedProjectsTableView::onDoubleClick(QModelIndex index) {
     script_process.waitForFinished();
 }
 
-void CSavedProjectsTableView::onProcessError(QProcess::ProcessError error) {
+void CSavedProjectsTableView::keyPressEvent(QKeyEvent *event) {
+    QModelIndexList selected_indexes_list = this->selectionModel()->selection().indexes();
+
+    switch (event->key()) {
+        case Qt::Key_Return:
+            if (!selected_indexes_list.empty()) {
+                this->runProjectScript(selected_indexes_list.first());
+            }
+            break;
+        default:
+            QTableView::keyPressEvent(event);
+    }
+}
+
+void CSavedProjectsTableView::handleProcessError(QProcess::ProcessError error) {
     QMessageBox box;
     switch (error) {
         case QProcess::FailedToStart:
