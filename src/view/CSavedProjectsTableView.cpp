@@ -50,12 +50,10 @@ void CSavedProjectsTableView::fillWithSavedProjectsData() {
 void CSavedProjectsTableView::runProjectScript(QModelIndex index) {
     Q_UNUSED(index);
 
-    SProjectInfo saved_project_info = this->_model->getList().at(index.row());
-
     QProcess script_process;
-
     QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleProcessError(QProcess::ProcessError)));
 
+    SProjectInfo saved_project_info = this->_model->getList().at(index.row());
     script_process.setWorkingDirectory(saved_project_info._location);
     script_process.start(saved_project_info._run_script);
 

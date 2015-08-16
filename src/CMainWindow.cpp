@@ -10,10 +10,11 @@ CMainWindow::CMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->hideRemoveAndConfigureButtons();
+    this->setRemoveAndConfigureButtonsVisibility(false);
     this->centerWindow();
 
     connect(ui->tableView, SIGNAL(scriptRunSuccessfully()), this, SLOT(close()));
+    connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(handleTableViewSelectionChange()));
 }
 
 CMainWindow::~CMainWindow() {
@@ -43,7 +44,15 @@ void CMainWindow::centerWindow() {
     this->setGeometry((screenWidth/2) - (width/2), (screenHeight/2) - (height/2), width, height);
 }
 
-void CMainWindow::hideRemoveAndConfigureButtons() const {
-    ui->removeButton->hide();
-    ui->configureButton->hide();
+void CMainWindow::setRemoveAndConfigureButtonsVisibility(bool visible) const {
+    ui->removeButton->setVisible(visible);
+    ui->configureButton->setVisible(visible);
+}
+
+void CMainWindow::handleTableViewSelectionChange() {
+    if (ui->tableView->selectionModel()->selectedRows().empty()) {
+        this->setRemoveAndConfigureButtonsVisibility(false);
+    } else {
+        this->setRemoveAndConfigureButtonsVisibility(true);
+    }
 }
