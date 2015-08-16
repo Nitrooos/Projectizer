@@ -12,6 +12,8 @@ CMainWindow::CMainWindow(QWidget *parent) :
 
     this->hideRemoveAndConfigureButtons();
     this->centerWindow();
+
+    connect(ui->tableView, SIGNAL(scriptRunSuccessfully()), this, SLOT(close()));
 }
 
 CMainWindow::~CMainWindow() {

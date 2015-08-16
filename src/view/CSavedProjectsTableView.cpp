@@ -59,7 +59,9 @@ void CSavedProjectsTableView::runProjectScript(QModelIndex index) {
     script_process.setWorkingDirectory(saved_project_info._location);
     script_process.start(saved_project_info._run_script);
 
-    script_process.waitForFinished();
+    if (script_process.waitForFinished()) {
+        emit scriptRunSuccessfully();
+    }
 }
 
 void CSavedProjectsTableView::keyPressEvent(QKeyEvent *event) {

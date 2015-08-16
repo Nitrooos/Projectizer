@@ -13,6 +13,8 @@ class CSavedProjectsTableView : public QTableView {
     public slots:
         void handleProcessError(QProcess::ProcessError);
         void runProjectScript(QModelIndex index);
+    signals:
+        void scriptRunSuccessfully();
     private:
         void setup();
         void fillWithSavedProjectsData();
