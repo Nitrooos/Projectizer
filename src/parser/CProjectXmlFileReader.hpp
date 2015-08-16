@@ -9,12 +9,13 @@ class QDomNode;
 using namespace std;
 
 struct SProjectInfo {
-    QString _name, _type, _location, _run_script;
+    QString _name, _type, _location, _run_script, _project_xml_file;
 };
 
 class CProjectXmlFileReader : public AXmlFileReader {
     public:
         CProjectXmlFileReader(QString file_name);
+        bool parse();
         SProjectInfo getParsedInformations() const;
     protected:
         void parseNode(const QDomNode &node);

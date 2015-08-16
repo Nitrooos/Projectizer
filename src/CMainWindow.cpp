@@ -15,13 +15,30 @@ CMainWindow::CMainWindow(QWidget *parent) :
 
     connect(ui->tableView, SIGNAL(scriptRunSuccessfully()), this, SLOT(close()));
     connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(handleTableViewSelectionChange()));
+    connect(ui->removeButton, SIGNAL(clicked()), ui->tableView, SLOT(removeSavedProjectXMLFile()));
 }
 
 CMainWindow::~CMainWindow() {
     delete ui;
 }
 
-// ESC should close application (fatser testing), no other changes
+/*
+ * Public slots
+ */
+
+void CMainWindow::handleTableViewSelectionChange() {
+    if (ui->tableView->selectionModel()->selectedRows().empty()) {
+        this->setRemoveAndConfigureButtonsVisibility(false);
+    } else {
+        this->setRemoveAndConfigureButtonsVisibility(true);
+    }
+}
+
+/*
+ * Private functions
+ */
+
+// ESC should close application (faster testing), no other changes
 void CMainWindow::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
         case Qt::Key_Escape:
@@ -47,12 +64,4 @@ void CMainWindow::centerWindow() {
 void CMainWindow::setRemoveAndConfigureButtonsVisibility(bool visible) const {
     ui->removeButton->setVisible(visible);
     ui->configureButton->setVisible(visible);
-}
-
-void CMainWindow::handleTableViewSelectionChange() {
-    if (ui->tableView->selectionModel()->selectedRows().empty()) {
-        this->setRemoveAndConfigureButtonsVisibility(false);
-    } else {
-        this->setRemoveAndConfigureButtonsVisibility(true);
-    }
 }
