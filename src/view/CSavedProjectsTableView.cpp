@@ -4,9 +4,11 @@
 #include "src/CConstants.hpp"
 #include "src/parser/CProjectXmlFileReader.hpp"
 
+#include <QMessageBox>
+#include <QHeaderView>
 #include <QStringList>
 
-CSavedProjectsTableView::CSavedProjectsTableView(QWidget *parent) : QTableView(parent) {
+CSavedProjectsTableView::CSavedProjectsTableView(QWidget *parent) : QTableView(parent), _model(nullptr) {
     this->setup();
 }
 
@@ -14,7 +16,13 @@ void CSavedProjectsTableView::setup() {
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->fillWithSavedProjectsData();
 
-    connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onDoubleClick(QModelIndex)));
+    // porawki wizualne (ukrycie siatki, odpowiednie rozmiary kolumn, zablokowanie rozszerzania kolumn)
+    this->setColumnWidth(0, 200);
+    this->setColumnWidth(1, 149);
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+    connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(runProjectScript(QModelIndex)));
 
     this->show();
 }
@@ -25,20 +33,63 @@ void CSavedProjectsTableView::fillWithSavedProjectsData() {
         CConstant::getProjectizerMainFolder() + CConstant::getSavedProjectsFolder()
     );
 
-    ProjectInfoList saved_projects_info_list;
+    QList<SProjectInfo> saved_projects_info_list;
     foreach (const QString &file_name, saved_projects_files) {
         CProjectXmlFileReader reader(file_name);
         reader.parse();
         SProjectInfo saved_project_info = reader.getParsedInformations();
 
-        saved_projects_info_list.push_back(ProjectRowInfo{saved_project_info._name, saved_project_info._type});
+        saved_projects_info_list.push_back(saved_project_info);
     }
 
-    this->setModel(new CProjectModel(saved_projects_info_list, this));
+    this->_model = new CProjectModel(saved_projects_info_list, this);
+    this->setModel(_model);
 }
 
 #include <iostream>
-void CSavedProjectsTableView::onDoubleClick(QModelIndex index) {
+void CSavedProjectsTableView::runProjectScript(QModelIndex index) {
     Q_UNUSED(index);
-    std::cout << "Siema\n";
+
+    QProcess script_process;
+    QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleProcessError(QProcess::ProcessError)));
+
+    SProjectInfo saved_project_info = this->_model->getList().at(index.row());
+    script_process.setWorkingDirectory(saved_project_info._location);
+    script_process.start(saved_project_info._run_script);
+
+    if (script_process.waitForFinished()) {
+        emit scriptRunSuccessfully();
+    }
+}
+
+void CSavedProjectsTableView::keyPressEvent(QKeyEvent *event) {
+    QModelIndexList selected_indexes_list = this->selectionModel()->selection().indexes();
+
+    switch (event->key()) {
+        case Qt::Key_Return:
+            if (!selected_indexes_list.empty()) {
+                this->runProjectScript(selected_indexes_list.first());
+            }
+            break;
+        default:
+            QTableView::keyPressEvent(event);
+    }
+}
+
+void CSavedProjectsTableView::handleProcessError(QProcess::ProcessError error) {
+    QMessageBox box;
+    switch (error) {
+        case QProcess::FailedToStart:
+            box.setText("The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.");
+            break;
+        case QProcess::Crashed:
+            box.setText("The process crashed some time after starting successfully.");
+            break;
+        case QProcess::UnknownError:
+        default:
+            box.setText("An unknown error occurred.");
+            break;
+    }
+
+    box.exec();
 }

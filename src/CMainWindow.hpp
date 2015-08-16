@@ -12,11 +12,12 @@ class CMainWindow : public QMainWindow {
     public:
         explicit CMainWindow(QWidget *parent = 0);
         ~CMainWindow();
-
+    public slots:
+        void handleTableViewSelectionChange();
     private:
         void keyPressEvent(QKeyEvent *event);
         void centerWindow();
-        void hideRemoveAndConfigureButtons() const;
+        void setRemoveAndConfigureButtonsVisibility(bool visible) const;
 
         Ui::CMainWindow *ui;
 };
