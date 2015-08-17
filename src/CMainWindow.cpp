@@ -1,4 +1,5 @@
 #include "CMainWindow.hpp"
+#include "dialog/CConfigureProjectDialog.hpp"
 #include "ui_MainWindow.h"
 
 #include <QKeyEvent>
@@ -16,6 +17,7 @@ CMainWindow::CMainWindow(QWidget *parent) :
     connect(ui->tableView, SIGNAL(scriptRunSuccessfully()), this, SLOT(close()));
     connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(handleTableViewSelectionChange()));
     connect(ui->removeButton, SIGNAL(clicked()), ui->tableView, SLOT(removeSavedProjectXMLFile()));
+    connect(ui->configureButton, SIGNAL(clicked()), this, SLOT(runConfigureProjectDialog()));
 }
 
 CMainWindow::~CMainWindow() {
@@ -32,6 +34,17 @@ void CMainWindow::handleTableViewSelectionChange() {
     } else {
         this->setRemoveAndConfigureButtonsVisibility(true);
     }
+}
+
+#include <iostream>
+void CMainWindow::runConfigureProjectDialog() {
+    auto *dialog = new CConfigureProjectDialog(this);
+
+    if (dialog->exec() == QDialog::Accepted) {
+        // pobierz nazwę nowego skryptu uruchomieniowego, zapisz w modelu i od razu w pliku
+    }
+
+    delete dialog;
 }
 
 /*
