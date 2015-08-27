@@ -42,6 +42,7 @@ void CMainWindow::runConfigureProjectDialog() {
 
     if (dialog->exec() == QDialog::Accepted) {
         // pobierz nazwę nowego skryptu uruchomieniowego, zapisz w modelu i od razu w pliku
+        std::cout << dialog->getNewRunScriptFile().toStdString() << "\n";
     }
 
     delete dialog;

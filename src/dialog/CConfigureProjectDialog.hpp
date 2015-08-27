@@ -17,6 +17,7 @@ class CConfigureProjectDialog : public QDialog {
         QString getNewRunScriptFile() const;
     private slots:
         void accept();
+        void browseFileAsRunScript();
     private:
         Ui::ConfigureProjectDialog *ui;
         QString _new_run_script_file;

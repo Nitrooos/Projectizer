@@ -1,10 +1,13 @@
 #include "CConfigureProjectDialog.hpp"
 #include "ui_ConfigureProjectDialog.h"
 
+#include <QFileDialog>
+
 CConfigureProjectDialog::CConfigureProjectDialog(QWidget *parent) :
     QDialog(parent), ui(new Ui::ConfigureProjectDialog)
 {
     ui->setupUi(this);
+    connect(ui->browseRunScriptFileButton, SIGNAL(clicked()), this, SLOT(browseFileAsRunScript()));
 }
 
 CConfigureProjectDialog::~CConfigureProjectDialog() {
@@ -17,6 +20,13 @@ CConfigureProjectDialog::~CConfigureProjectDialog() {
 
 void CConfigureProjectDialog::accept() {
     this->_new_run_script_file = ui->newRunScriptFileLabel->text();
+}
+
+void CConfigureProjectDialog::browseFileAsRunScript() {
+    QFileDialog *file_dialog = new QFileDialog(this);
+    if (file_dialog->exec() == QDialog::Accepted) {
+        ui->newRunScriptFileLabel->setText(file_dialog->getOpenFileName());
+    }
 }
 
 /*
