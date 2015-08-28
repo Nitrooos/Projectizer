@@ -10,7 +10,7 @@ class CProjectModel : public QAbstractTableModel {
         CProjectModel(QList<SProjectInfo> const& saved_projects_info, QObject *parent = 0);
 
         QList<SProjectInfo> getList();
-        SProjectInfo getItem(int index);
+        SProjectInfo &getItem(int index);
 
         int rowCount(const QModelIndex &parent) const;
         int columnCount(const QModelIndex &parent) const;

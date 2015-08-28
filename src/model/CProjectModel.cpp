@@ -112,6 +112,6 @@ QList<SProjectInfo> CProjectModel::getList() {
     return saved_projects_info;
 }
 
-SProjectInfo CProjectModel::getItem(int index) {
-    return saved_projects_info.at(index);
+SProjectInfo &CProjectModel::getItem(int index) {
+    return saved_projects_info[index];
 }
