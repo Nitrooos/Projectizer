@@ -10,6 +10,9 @@ class CSavedProjectsTableView : public QTableView {
     Q_OBJECT
     public:
         CSavedProjectsTableView(QWidget *parent);
+
+        int getSelectedRowIndex() const;
+        CProjectModel *model() const;
     public slots:
         void handleProcessError(QProcess::ProcessError);
         void runProjectScript(QModelIndex index);

@@ -11,7 +11,7 @@ namespace Ui {
 class CConfigureProjectDialog : public QDialog {
     Q_OBJECT
     public:
-        explicit CConfigureProjectDialog(QWidget *parent = 0);
+        explicit CConfigureProjectDialog(QWidget *parent, QString current_run_script_file);
         ~CConfigureProjectDialog();
 
         QString getNewRunScriptFile() const;
