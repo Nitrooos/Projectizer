@@ -20,13 +20,12 @@ CConfigureProjectDialog::~CConfigureProjectDialog() {
 
 void CConfigureProjectDialog::accept() {
     this->_new_run_script_file = ui->newRunScriptFileLabel->text();
+    this->close();
 }
 
 void CConfigureProjectDialog::browseFileAsRunScript() {
     QFileDialog *file_dialog = new QFileDialog(this);
-    if (file_dialog->exec() == QDialog::Accepted) {
-        ui->newRunScriptFileLabel->setText(file_dialog->getOpenFileName());
-    }
+    ui->newRunScriptFileLabel->setText(file_dialog->getOpenFileName());
 }
 
 /*
