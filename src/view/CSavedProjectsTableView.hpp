@@ -10,9 +10,13 @@ class CSavedProjectsTableView : public QTableView {
     Q_OBJECT
     public:
         CSavedProjectsTableView(QWidget *parent);
+
+        SProjectInfo &getSelectedProjectInfo();
+        CProjectModel *model() const;
     public slots:
         void handleProcessError(QProcess::ProcessError);
         void runProjectScript(QModelIndex index);
+        void removeSavedProjectXMLFile();
     signals:
         void scriptRunSuccessfully();
     private:

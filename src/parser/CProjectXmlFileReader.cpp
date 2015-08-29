@@ -9,6 +9,12 @@ SProjectInfo CProjectXmlFileReader::getParsedInformations() const {
     return _project_info;
 }
 
+bool CProjectXmlFileReader::parse() {
+    _project_info._project_xml_file = this->_file_name;
+
+    return AXmlFileReader::parse();
+}
+
 void CProjectXmlFileReader::parseNode(const QDomNode &node) {
     if (node.isElement()) {
         QDomElement element = node.toElement();

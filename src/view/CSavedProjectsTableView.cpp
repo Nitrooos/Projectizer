@@ -12,6 +12,73 @@ CSavedProjectsTableView::CSavedProjectsTableView(QWidget *parent) : QTableView(p
     this->setup();
 }
 
+SProjectInfo &CSavedProjectsTableView::getSelectedProjectInfo() {
+    QModelIndexList selected = this->selectionModel()->selectedRows();
+    return this->_model->getItem(selected.first().row());
+}
+
+CProjectModel *CSavedProjectsTableView::model() const {
+    return this->_model;
+}
+
+/*
+ * Public slots
+ */
+
+void CSavedProjectsTableView::runProjectScript(QModelIndex index) {
+    QProcess script_process;
+    QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleProcessError(QProcess::ProcessError)));
+
+    SProjectInfo saved_project_info = this->_model->getList().at(index.row());
+    script_process.setWorkingDirectory(saved_project_info._location);
+    script_process.start(saved_project_info._run_script);
+
+    if (script_process.waitForFinished()) {
+        emit scriptRunSuccessfully();
+    }
+}
+
+void CSavedProjectsTableView::handleProcessError(QProcess::ProcessError error) {
+    QMessageBox box;
+    switch (error) {
+        case QProcess::FailedToStart:
+            box.setText("The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.");
+            break;
+        case QProcess::Crashed:
+            box.setText("The process crashed some time after starting successfully.");
+            break;
+        case QProcess::UnknownError:
+        default:
+            box.setText("An unknown error occurred.");
+            break;
+    }
+
+    box.exec();
+}
+
+void CSavedProjectsTableView::removeSavedProjectXMLFile() {
+    QModelIndexList selected_indexes = this->selectionModel()->selectedRows();
+    if (selected_indexes.empty()) {
+        return;
+    }
+
+    QModelIndex index = selected_indexes.first();
+    QFile saved_project_xml_file(this->_model->getList().at(index.row())._project_xml_file);
+
+    if (!saved_project_xml_file.remove()) {
+        // jeśli nie udało się usunąć pliku...
+        QMessageBox box;
+        box.setText("Cannot remove specified project: Does its xml file still exist?");
+    } else {
+        // jeśli usunięto plik XML danego projetu
+        this->_model->removeRow(index.row());
+    }
+}
+
+/*
+ * Private functions
+ */
+
 void CSavedProjectsTableView::setup() {
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->fillWithSavedProjectsData();
@@ -46,22 +113,6 @@ void CSavedProjectsTableView::fillWithSavedProjectsData() {
     this->setModel(_model);
 }
 
-#include <iostream>
-void CSavedProjectsTableView::runProjectScript(QModelIndex index) {
-    Q_UNUSED(index);
-
-    QProcess script_process;
-    QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleProcessError(QProcess::ProcessError)));
-
-    SProjectInfo saved_project_info = this->_model->getList().at(index.row());
-    script_process.setWorkingDirectory(saved_project_info._location);
-    script_process.start(saved_project_info._run_script);
-
-    if (script_process.waitForFinished()) {
-        emit scriptRunSuccessfully();
-    }
-}
-
 void CSavedProjectsTableView::keyPressEvent(QKeyEvent *event) {
     QModelIndexList selected_indexes_list = this->selectionModel()->selection().indexes();
 
@@ -74,22 +125,4 @@ void CSavedProjectsTableView::keyPressEvent(QKeyEvent *event) {
         default:
             QTableView::keyPressEvent(event);
     }
-}
-
-void CSavedProjectsTableView::handleProcessError(QProcess::ProcessError error) {
-    QMessageBox box;
-    switch (error) {
-        case QProcess::FailedToStart:
-            box.setText("The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.");
-            break;
-        case QProcess::Crashed:
-            box.setText("The process crashed some time after starting successfully.");
-            break;
-        case QProcess::UnknownError:
-        default:
-            box.setText("An unknown error occurred.");
-            break;
-    }
-
-    box.exec();
 }

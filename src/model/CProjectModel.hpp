@@ -9,6 +9,9 @@ class CProjectModel : public QAbstractTableModel {
         CProjectModel(QObject *parent = 0);
         CProjectModel(QList<SProjectInfo> const& saved_projects_info, QObject *parent = 0);
 
+        QList<SProjectInfo> getList();
+        SProjectInfo &getItem(int index);
+
         int rowCount(const QModelIndex &parent) const;
         int columnCount(const QModelIndex &parent) const;
         QVariant data(const QModelIndex &index, int role) const;
@@ -17,7 +20,6 @@ class CProjectModel : public QAbstractTableModel {
         bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole);
         bool insertRows(int position, int rows, const QModelIndex &index=QModelIndex());
         bool removeRows(int position, int rows, const QModelIndex &index=QModelIndex());
-        QList<SProjectInfo> getList();
     private:
         QList<SProjectInfo> saved_projects_info;
 };
