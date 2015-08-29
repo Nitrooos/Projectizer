@@ -1,13 +1,16 @@
 #include "CConfigureProjectDialog.hpp"
+#include "src/model/CProjectModel.hpp"
+#include "src/parser/CProjectXmlFileWriter.hpp"
 #include "ui_ConfigureProjectDialog.h"
 
 #include <QFileDialog>
+#include <QMessageBox>
 
-CConfigureProjectDialog::CConfigureProjectDialog(QWidget *parent, QString current_run_script_file) :
-    QDialog(parent), ui(new Ui::ConfigureProjectDialog)
+CConfigureProjectDialog::CConfigureProjectDialog(QWidget *parent, SProjectInfo &project_info) :
+    QDialog(parent), ui(new Ui::ConfigureProjectDialog), _edited_project_info(project_info)
 {
     ui->setupUi(this);
-    ui->newRunScriptFileLabel->setText(current_run_script_file);
+    ui->newRunScriptFileLabel->setText(_edited_project_info._run_script);
 
     connect(ui->browseRunScriptFileButton, SIGNAL(clicked()), this, SLOT(browseFileAsRunScript()));
 }
@@ -21,7 +24,15 @@ CConfigureProjectDialog::~CConfigureProjectDialog() {
  */
 
 void CConfigureProjectDialog::accept() {
-    this->_new_run_script_file = ui->newRunScriptFileLabel->text();
+    // pobierz nazwę nowego skryptu uruchomieniowego, zapisz w modelu
+    _edited_project_info._run_script = ui->newRunScriptFileLabel->text();
+    // i od razu w pliku
+    CProjectXmlFileWriter writer(_edited_project_info);
+    if (!writer.save()) {
+        QMessageBox box;
+        box.setText("Cannot update xml file associated with project. Does it still exist and you have write permissions?");
+    }
+
     this->close();
     this->setResult(QDialog::Accepted);
 }
@@ -29,12 +40,4 @@ void CConfigureProjectDialog::accept() {
 void CConfigureProjectDialog::browseFileAsRunScript() {
     QFileDialog *file_dialog = new QFileDialog(this);
     ui->newRunScriptFileLabel->setText(file_dialog->getOpenFileName());
-}
-
-/*
- * Private functions
- */
-
-QString CConfigureProjectDialog::getNewRunScriptFile() const {
-    return _new_run_script_file;
 }

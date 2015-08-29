@@ -11,7 +11,7 @@ class CSavedProjectsTableView : public QTableView {
     public:
         CSavedProjectsTableView(QWidget *parent);
 
-        int getSelectedRowIndex() const;
+        SProjectInfo &getSelectedProjectInfo();
         CProjectModel *model() const;
     public slots:
         void handleProcessError(QProcess::ProcessError);

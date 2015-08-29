@@ -37,16 +37,10 @@ void CMainWindow::handleTableViewSelectionChange() {
 }
 
 void CMainWindow::runConfigureProjectDialog() {
-    SProjectInfo &selected_project_info = ui->tableView->model()->getItem(ui->tableView->getSelectedRowIndex());
+    SProjectInfo &selected_project_info = ui->tableView->getSelectedProjectInfo();
 
-    auto *dialog = new CConfigureProjectDialog(this, selected_project_info._run_script);
-
-    if (dialog->exec() == QDialog::Accepted) {
-        // pobierz nazwę nowego skryptu uruchomieniowego, zapisz w modelu
-        selected_project_info._run_script = dialog->getNewRunScriptFile();
-        // i od razu w pliku
-        // ...
-    }
+    auto *dialog = new CConfigureProjectDialog(this, selected_project_info);
+    dialog->exec();
 
     delete dialog;
 }

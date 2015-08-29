@@ -8,19 +8,19 @@ namespace Ui {
     class ConfigureProjectDialog;
 }
 
+struct SProjectInfo;
+
 class CConfigureProjectDialog : public QDialog {
     Q_OBJECT
     public:
-        explicit CConfigureProjectDialog(QWidget *parent, QString current_run_script_file);
+        explicit CConfigureProjectDialog(QWidget *parent, SProjectInfo &project_info);
         ~CConfigureProjectDialog();
-
-        QString getNewRunScriptFile() const;
     private slots:
         void accept();
         void browseFileAsRunScript();
     private:
         Ui::ConfigureProjectDialog *ui;
-        QString _new_run_script_file;
+        SProjectInfo &_edited_project_info;
 };
 
 #endif // CONFIGUREPROJECTDIALOG_HPP

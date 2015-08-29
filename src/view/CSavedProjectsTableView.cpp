@@ -12,13 +12,9 @@ CSavedProjectsTableView::CSavedProjectsTableView(QWidget *parent) : QTableView(p
     this->setup();
 }
 
-int CSavedProjectsTableView::getSelectedRowIndex() const {
+SProjectInfo &CSavedProjectsTableView::getSelectedProjectInfo() {
     QModelIndexList selected = this->selectionModel()->selectedRows();
-    if (selected.empty()) {
-        return -1;
-    } else {
-        return selected.first().row();
-    }
+    return this->_model->getItem(selected.first().row());
 }
 
 CProjectModel *CSavedProjectsTableView::model() const {
