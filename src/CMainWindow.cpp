@@ -10,8 +10,8 @@ CMainWindow::CMainWindow(QWidget *parent) :
     ui(new Ui::CMainWindow)
 {
     ui->setupUi(this);
+    ui->tableView->selectRow(0);
 
-    this->setRemoveAndConfigureButtonsVisibility(false);
     this->centerWindow();
 
     connect(ui->tableView, SIGNAL(scriptRunSuccessfully()), this, SLOT(close()));
