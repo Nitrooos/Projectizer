@@ -38,7 +38,10 @@ void CConfigureProjectDialog::accept() {
 }
 
 void CConfigureProjectDialog::browseFileAsRunScript() {
-    ui->newRunScriptFileLabel->setText(QFileDialog::getOpenFileName(
-        this, "Choose new run script file...", _edited_project_info._location, "*.xml"
-    ));
+    QString new_run_script = QFileDialog::getOpenFileName(this, "Choose new run script file...", _edited_project_info._location);
+
+    // jeśli wybrano jakiś plik
+    if (new_run_script.size() > 0) {
+        ui->newRunScriptFileLabel->setText(new_run_script);
+    }
 }
