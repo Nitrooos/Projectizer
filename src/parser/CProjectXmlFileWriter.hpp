@@ -10,7 +10,7 @@ class CProjectXmlFileWriter {
         CProjectXmlFileWriter(SProjectInfo const&info);
         bool save();
     private:
-        QDomElement createElement(QString tag_name, QString tag_value) const;
+        QDomElement createElement(QDomDocument document, QString tag_name, QString tag_value) const;
 
         SProjectInfo const& _info;
 };

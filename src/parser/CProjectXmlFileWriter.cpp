@@ -16,10 +16,10 @@ bool CProjectXmlFileWriter::save() {
     QDomDocument document;
     QDomElement project = document.createElement("project");
 
-    project.appendChild(this->createElement("name", _info._name));
-    project.appendChild(this->createElement("type", _info._type));
-    project.appendChild(this->createElement("location", _info._location));
-    project.appendChild(this->createElement("run_script", _info._run_script));
+    project.appendChild(this->createElement(document, "name", _info._name));
+    project.appendChild(this->createElement(document, "type", _info._type));
+    project.appendChild(this->createElement(document, "location", _info._location));
+    project.appendChild(this->createElement(document, "run_script", _info._run_script));
 
     document.appendChild(project);
 
@@ -29,7 +29,7 @@ bool CProjectXmlFileWriter::save() {
     return true;
 }
 
-QDomElement CProjectXmlFileWriter::createElement(QString tag_name, QString tag_value) const {
+QDomElement CProjectXmlFileWriter::createElement(QDomDocument document, QString tag_name, QString tag_value) const {
     QDomElement element = document.createElement(tag_name);
     QDomText element_text = document.createTextNode(tag_value);
     element.appendChild(element_text);
