@@ -3,11 +3,15 @@
 
 #include "src/model/CProjectModel.hpp"
 
+#include <QDomElement>
+
 class CProjectXmlFileWriter {
     public:
         CProjectXmlFileWriter(SProjectInfo const&info);
         bool save();
     private:
+        QDomElement createElement(QString tag_name, QString tag_value) const;
+
         SProjectInfo const& _info;
 };
 
