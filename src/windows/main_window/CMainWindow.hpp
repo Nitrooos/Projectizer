@@ -1,6 +1,8 @@
 #ifndef CMAINWINDOW_H
 #define CMAINWINDOW_H
 
+#include "../new_project_window/CNewProjectWindow.hpp"
+
 #include <QMainWindow>
 
 namespace Ui {
@@ -22,6 +24,7 @@ class CMainWindow : public QMainWindow {
         void setRemoveAndConfigureButtonsVisibility(bool visible) const;
 
         Ui::CMainWindow *ui;
+        QScopedPointer<CNewProjectWindow> _new_project_window;
 };
 
 #endif // CMAINWINDOW_H

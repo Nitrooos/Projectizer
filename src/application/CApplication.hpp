@@ -2,7 +2,7 @@
 #define CAPPLICATION_HPP
 
 #include "../windows/main_window/CMainWindow.hpp"
-#include "../windows/new_project_dialog/CNewProjectWindow.hpp"
+#include "../windows/new_project_window/CNewProjectWindow.hpp"
 
 #include <QApplication>
 #include <QScopedPointer>

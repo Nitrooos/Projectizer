@@ -1,6 +1,5 @@
 #include "CMainWindow.hpp"
 #include "../configure_dialog/CConfigureProjectDialog.hpp"
-#include "../new_project_dialog/CNewProjectWindow.hpp"
 #include "ui_MainWindow.h"
 
 #include <QKeyEvent>
@@ -48,10 +47,12 @@ void CMainWindow::runConfigureProjectDialog() {
 }
 
 void CMainWindow::runNewProjectWindow() {
-    auto *window = new CNewProjectWindow("", this);
-    window->show();
+    if (this->_new_project_window.isNull()) {
+        // twórz nowy obiekt okna tylko jeśli nastąpiło pierwsze kliknięcie "New project..."
+        this->_new_project_window.reset(new CNewProjectWindow("", this));
+    }
 
-    delete window;
+    this->_new_project_window->show();
 }
 
 /*
