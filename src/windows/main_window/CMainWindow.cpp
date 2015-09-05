@@ -1,5 +1,6 @@
 #include "CMainWindow.hpp"
 #include "../configure_dialog/CConfigureProjectDialog.hpp"
+#include "../new_project_dialog/CNewProjectWindow.hpp"
 #include "ui_MainWindow.h"
 
 #include <QKeyEvent>
@@ -16,6 +17,7 @@ CMainWindow::CMainWindow(QWidget *parent) :
 
     connect(ui->tableView, SIGNAL(scriptRunSuccessfully()), this, SLOT(close()));
     connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(handleTableViewSelectionChange()));
+    connect(ui->newProjectButton, SIGNAL(clicked()), this, SLOT(runNewProjectWindow()));
     connect(ui->removeButton, SIGNAL(clicked()), ui->tableView, SLOT(removeSavedProjectXMLFile()));
     connect(ui->configureButton, SIGNAL(clicked()), this, SLOT(runConfigureProjectDialog()));
 }
@@ -43,6 +45,13 @@ void CMainWindow::runConfigureProjectDialog() {
     dialog->exec();
 
     delete dialog;
+}
+
+void CMainWindow::runNewProjectWindow() {
+    auto *window = new CNewProjectWindow("", this);
+    window->show();
+
+    delete window;
 }
 
 /*

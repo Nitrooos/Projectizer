@@ -25,7 +25,8 @@ SOURCES += src/main.cpp\
     src/saved_projects/view/CSavedProjectsTableView.cpp \
     src/windows/configure_dialog/CConfigureProjectDialog.cpp \
     src/parser/CProjectXmlFileWriter.cpp \
-    src/application/CApplication.cpp
+    src/application/CApplication.cpp \
+    src/windows/new_project_window/CNewProjectWindow.cpp
 
 HEADERS  += \
     src/windows/main_window/CMainWindow.hpp \
@@ -39,10 +40,12 @@ HEADERS  += \
     src/saved_projects/view/CSavedProjectsTableView.hpp \
     src/windows/configure_dialog/CConfigureProjectDialog.hpp \
     src/parser/CProjectXmlFileWriter.hpp \
-    src/application/CApplication.hpp
+    src/application/CApplication.hpp \
+    src/windows/new_project_window/CNewProjectWindow.hpp
 
 FORMS    += ui/MainWindow.ui \
-    ui/ConfigureProjectDialog.ui
+    ui/ConfigureProjectDialog.ui \
+    ui/NewProjectWindow.ui
 
 OTHER_FILES += \
     project.xml \

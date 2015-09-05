@@ -11,6 +11,8 @@ CApplication::CApplication(int &argc, char *argv[]) : QApplication(argc, argv) {
 
     if (this->_new_project_directory) {
         // tryb tworzenia nowego projektu
+        this->_new_project_window.reset(new CNewProjectWindow(*_new_project_directory.data()));
+        this->_new_project_window->show();
     } else {
         // tryb do przeglądania zapisanych projektów
         this->_main_window.reset(new CMainWindow());

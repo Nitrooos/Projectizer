@@ -15,6 +15,7 @@ class CMainWindow : public QMainWindow {
     public slots:
         void handleTableViewSelectionChange();
         void runConfigureProjectDialog();
+        void runNewProjectWindow();
     private:
         void keyPressEvent(QKeyEvent *event);
         void centerWindow();

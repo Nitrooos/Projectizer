@@ -2,6 +2,7 @@
 #define CAPPLICATION_HPP
 
 #include "../windows/main_window/CMainWindow.hpp"
+#include "../windows/new_project_dialog/CNewProjectWindow.hpp"
 
 #include <QApplication>
 #include <QScopedPointer>
@@ -15,6 +16,7 @@ class CApplication : public QApplication {
         void parseArguments();
 
         QScopedPointer<CMainWindow> _main_window;
+        QScopedPointer<CNewProjectWindow> _new_project_window;
         QScopedPointer<QString> _new_project_directory;
 };
 
