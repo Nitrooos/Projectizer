@@ -1,7 +1,7 @@
 #ifndef CSAVEDPROJECTSTABLEVIEW_HPP
 #define CSAVEDPROJECTSTABLEVIEW_HPP
 
-#include "src/model/CProjectModel.hpp"
+#include "src/saved_projects/model/CProjectModel.hpp"
 #include <QProcess>
 #include <QTableView>
 #include <QKeyEvent>

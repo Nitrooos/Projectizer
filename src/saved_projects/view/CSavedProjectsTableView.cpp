@@ -1,5 +1,4 @@
 #include "CSavedProjectsTableView.hpp"
-#include "src/model/CProjectModel.hpp"
 #include "src/file_finder/CXMLFileFinder.hpp"
 #include "src/CConstants.hpp"
 #include "src/parser/CProjectXmlFileReader.hpp"

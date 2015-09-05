@@ -1,7 +1,7 @@
 #ifndef CPROJECTXMLFILEWRITER_HPP
 #define CPROJECTXMLFILEWRITER_HPP
 
-#include "src/model/CProjectModel.hpp"
+#include "src/saved_projects/model/CProjectModel.hpp"
 
 #include <QDomElement>
 

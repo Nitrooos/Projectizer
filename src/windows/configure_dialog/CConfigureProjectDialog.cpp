@@ -1,5 +1,4 @@
 #include "CConfigureProjectDialog.hpp"
-#include "src/model/CProjectModel.hpp"
 #include "src/parser/CProjectXmlFileWriter.hpp"
 #include "ui_ConfigureProjectDialog.h"
 

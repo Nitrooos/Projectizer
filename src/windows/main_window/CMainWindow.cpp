@@ -1,5 +1,5 @@
 #include "CMainWindow.hpp"
-#include "dialog/CConfigureProjectDialog.hpp"
+#include "../configure_dialog/CConfigureProjectDialog.hpp"
 #include "ui_MainWindow.h"
 
 #include <QKeyEvent>
