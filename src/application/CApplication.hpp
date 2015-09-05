@@ -15,7 +15,7 @@ class CApplication : public QApplication {
         void parseArguments();
 
         QScopedPointer<CMainWindow> _main_window;
-        QStringList _parsedPositionalArguments;
+        QScopedPointer<QString> _new_project_directory;
 };
 
 #endif // CAPPLICATION_HPP

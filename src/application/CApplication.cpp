@@ -1,5 +1,6 @@
 #include "CApplication.hpp"
 
+#include <QDir>
 #include <QCommandLineParser>
 
 CApplication::CApplication(int &argc, char *argv[]) : QApplication(argc, argv) {
@@ -8,8 +9,13 @@ CApplication::CApplication(int &argc, char *argv[]) : QApplication(argc, argv) {
 
     this->parseArguments();
 
-    this->_main_window.reset(new CMainWindow());
-    this->_main_window->show();
+    if (this->_new_project_directory) {
+        // tryb tworzenia nowego projektu
+    } else {
+        // tryb do przeglądania zapisanych projektów
+        this->_main_window.reset(new CMainWindow());
+        this->_main_window->show();
+    }
 }
 
 void CApplication::parseArguments() {
@@ -20,5 +26,10 @@ void CApplication::parseArguments() {
     parser.addPositionalArgument("directory", QApplication::translate("main", "Directory to run application in mode 'Create new project'"));
     parser.process(*this);
 
-    this->_parsedPositionalArguments = parser.positionalArguments();
+    if (parser.positionalArguments().length() > 0) {
+        QString given_directory = parser.positionalArguments().at(0);
+        if (QDir(given_directory).exists()) {
+            this->_new_project_directory.reset(new QString(given_directory));
+        }
+    }
 }
