@@ -130,7 +130,7 @@
   <customwidget>
    <class>CSavedProjectsTableView</class>
    <extends>QTableView</extends>
-   <header>src/view/CSavedProjectsTableView.hpp</header>
+   <header>src/saved_projects/view/CSavedProjectsTableView.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>

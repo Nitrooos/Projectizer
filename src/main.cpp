@@ -1,7 +1,4 @@
-#include "windows/main_window/CMainWindow.hpp"
-
-#include <QApplication>
-#include <QCommandLineParser>
+#include "application/CApplication.hpp"
 //#include <QElapsedTimer>
 
 #include <iostream>
@@ -27,22 +24,6 @@ int main(int argc, char *argv[]) {
         std::cout << p.print().toStdString();
     }*/
 
-
-    QApplication app(argc, argv);
-    /*QApplication::setApplicationName("Projectizer");
-    QApplication::setApplicationVersion("0.1");
-
-    QCommandLineParser parser;
-    parser.setApplicationDescription("Test helper");
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.addPositionalArgument("directory", QApplication::translate("main", "Directory to run application in mode 'Create new project'"));
-    parser.process(app);
-
-    const QStringList args = parser.positionalArguments();*/
-
-    CMainWindow window;
-    window.show();
-
+    CApplication app(argc, argv);
     return app.exec();
 }
