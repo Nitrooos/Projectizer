@@ -11,9 +11,10 @@ class CNewProjectWindow : public QMainWindow {
     Q_OBJECT
     public:
        CNewProjectWindow(QString const& directory = "", QWidget *parent = 0);
+    private slots:
+       void createNewProject();
     private:
         Ui::NewProjectWindow *ui;
-
         QString _directory;
 };
 
