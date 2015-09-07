@@ -2,6 +2,7 @@
 #define CNEWPROJECTDIALOG_HPP
 
 #include <QMainWindow>
+#include <QStandardItem>
 
 namespace Ui {
     class NewProjectWindow;
@@ -14,6 +15,8 @@ class CNewProjectWindow : public QMainWindow {
     private slots:
        void createNewProject();
     private:
+        QList<QStandardItem *> prepareRow(const QString &text);
+
         Ui::NewProjectWindow *ui;
         QString _directory;
 };

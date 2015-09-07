@@ -26,7 +26,8 @@ SOURCES += src/main.cpp\
     src/windows/configure_dialog/CConfigureProjectDialog.cpp \
     src/parser/CProjectXmlFileWriter.cpp \
     src/application/CApplication.cpp \
-    src/windows/new_project_window/CNewProjectWindow.cpp
+    src/windows/new_project_window/CNewProjectWindow.cpp \
+    src/new_projects/project_type_item/CProjectTypeItem.cpp
 
 HEADERS  += \
     src/windows/main_window/CMainWindow.hpp \
@@ -41,7 +42,8 @@ HEADERS  += \
     src/windows/configure_dialog/CConfigureProjectDialog.hpp \
     src/parser/CProjectXmlFileWriter.hpp \
     src/application/CApplication.hpp \
-    src/windows/new_project_window/CNewProjectWindow.hpp
+    src/windows/new_project_window/CNewProjectWindow.hpp \
+    src/new_projects/project_type_item/CProjectTypeItem.hpp
 
 FORMS    += ui/MainWindow.ui \
     ui/ConfigureProjectDialog.ui \
