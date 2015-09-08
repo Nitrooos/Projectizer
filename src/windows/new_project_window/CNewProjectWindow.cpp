@@ -5,11 +5,14 @@
 
 #include <QTreeView>
 #include <QStandardItemModel>
+#include <QStandardItem>
+#include <QKeyEvent>
 
 CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::NewProjectWindow),  _directory(directory)
 {
     ui->setupUi(this);
+    ui->treeView->header()->setVisible(false);
 
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->createButton, SIGNAL(clicked()), this, SLOT(createNewProject()));
@@ -39,6 +42,25 @@ QList<QStandardItem *> CNewProjectWindow::prepareRow(const QString &text) {
     rowItems << new CProjectTypeItem(info);
     return rowItems;
 }
+
+/*
+ * Private functions
+ */
+
+// ESC should close application (faster testing), no other changes
+void CNewProjectWindow::keyPressEvent(QKeyEvent *event) {
+    switch (event->key()) {
+        case Qt::Key_Escape:
+            close();
+            break;
+        default:
+            QMainWindow::keyPressEvent(event);
+    }
+}
+
+/*
+ * Private slots
+ */
 
 void CNewProjectWindow::createNewProject() {
     close();

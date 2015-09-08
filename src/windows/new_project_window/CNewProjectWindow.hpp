@@ -2,7 +2,9 @@
 #define CNEWPROJECTDIALOG_HPP
 
 #include <QMainWindow>
-#include <QStandardItem>
+
+class QStandardItem;
+class QKeyEvent;
 
 namespace Ui {
     class NewProjectWindow;
@@ -15,6 +17,7 @@ class CNewProjectWindow : public QMainWindow {
     private slots:
        void createNewProject();
     private:
+        void keyPressEvent(QKeyEvent *event);
         QList<QStandardItem *> prepareRow(const QString &text);
 
         Ui::NewProjectWindow *ui;
