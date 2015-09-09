@@ -2,6 +2,8 @@
 #include "ui_NewProjectWindow.h"
 
 #include "src/new_projects/project_type_item/CProjectTypeItem.hpp"
+#include "src/file_finder/CProjectTemplateFileFinder.hpp"
+#include "src/CConstants.hpp"
 
 #include <QTreeView>
 #include <QStandardItemModel>
@@ -16,31 +18,20 @@ CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
 
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->createButton, SIGNAL(clicked()), this, SLOT(createNewProject()));
+    connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(buildTemplateOptions(QModelIndex)));
 
     /* DOKLEJONE */
     auto standardModel = new QStandardItemModel;
-
-    QList<QStandardItem *> preparedRow = prepareRow("C++");
     QStandardItem *item = standardModel->invisibleRootItem();
-    // adding a row to the invisible root item produces a root element
-    item->appendRow(preparedRow);
 
-    QList<QStandardItem *> secondRow = prepareRow("Games");
-    // adding a row to an item starts a subtree
-    preparedRow.first()->appendRow(secondRow);
-
-    QList<QStandardItem *> thirdRow = prepareRow("SFML");
-    secondRow.first()->appendRow(thirdRow);
+    CProjectTemplateFileFinder finder(
+        CConstant::getProjectizerMainFolder() + CConstant::getTemplatesFolder(),
+        item
+    );
+    finder.findTemplateFilesBFS();
 
     ui->treeView->setModel(standardModel);
     ui->treeView->expandAll();
-}
-
-QList<QStandardItem *> CNewProjectWindow::prepareRow(const QString &text) {
-    SProjectTypeInfo info {text, {"test1", "test2", "test3"}, {nullptr}};
-    QList<QStandardItem *> rowItems;
-    rowItems << new CProjectTypeItem(info);
-    return rowItems;
 }
 
 /*
@@ -64,4 +55,9 @@ void CNewProjectWindow::keyPressEvent(QKeyEvent *event) {
 
 void CNewProjectWindow::createNewProject() {
     close();
+}
+
+#include <iostream>
+void CNewProjectWindow::buildTemplateOptions(QModelIndex index) {
+    std::cout << "Klik" << std::endl;
 }

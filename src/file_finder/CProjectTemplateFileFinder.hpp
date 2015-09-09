@@ -1,13 +1,17 @@
 #ifndef CPROJECTTEMPLATEFILEFINDER_HPP
 #define CPROJECTTEMPLATEFILEFINDER_HPP
 
-class QDir;
+#include <QDir>
+
 class QStandardItem;
 
 class CProjectTemplateFileFinder {
     public:
-        CProjectTemplateFileFinder();
-        void findTemplateFilesBFS(QDir directory, QStandardItem *root_item);
+        CProjectTemplateFileFinder(QString directory, QStandardItem *root_item);
+        QStandardItem* findTemplateFilesBFS();
+    private:
+        QString _root_directory;
+        QStandardItem *_root_item;
 };
 
 #endif // CPROJECTTEMPLATEFILEFINDER_HPP
