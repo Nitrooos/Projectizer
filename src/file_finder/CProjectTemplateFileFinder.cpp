@@ -2,7 +2,6 @@
 
 #include "src/new_projects/project_type_item/CProjectTypeItem.hpp"
 
-#include <QStandardItem>
 #include <QList>
 
 CProjectTemplateFileFinder::CProjectTemplateFileFinder(QString directory, QStandardItem *root_item)

@@ -18,7 +18,7 @@ CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
 
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->createButton, SIGNAL(clicked()), this, SLOT(createNewProject()));
-    connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(buildTemplateOptions(QModelIndex)));
+    connect(ui->treeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(buildTemplateOptions()));
 
     /* DOKLEJONE */
     auto standardModel = new QStandardItemModel;
@@ -58,6 +58,6 @@ void CNewProjectWindow::createNewProject() {
 }
 
 #include <iostream>
-void CNewProjectWindow::buildTemplateOptions(QModelIndex index) {
-    std::cout << "Klik" << std::endl;
+void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) {
+    QModelIndex selected_index = selected.indexes().first();
 }

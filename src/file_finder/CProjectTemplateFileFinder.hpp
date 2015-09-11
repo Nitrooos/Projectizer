@@ -8,7 +8,7 @@ class QStandardItem;
 class CProjectTemplateFileFinder {
     public:
         CProjectTemplateFileFinder(QString directory, QStandardItem *root_item);
-        QStandardItem* findTemplateFilesBFS();
+        QStandardItem *findTemplateFilesBFS();
     private:
         QString _root_directory;
         QStandardItem *_root_item;
