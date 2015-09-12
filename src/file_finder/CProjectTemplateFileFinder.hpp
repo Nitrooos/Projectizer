@@ -3,15 +3,15 @@
 
 #include <QDir>
 
-class QStandardItem;
+class SProjectTypeItem;
 
 class CProjectTemplateFileFinder {
     public:
-        CProjectTemplateFileFinder(QString directory, QStandardItem *root_item);
-        QStandardItem *findTemplateFilesBFS();
+        CProjectTemplateFileFinder(QString directory);
+        SProjectTypeItem *findTemplateFilesBFS();
     private:
         QString _root_directory;
-        QStandardItem *_root_item;
+        SProjectTypeItem *_root_item;
 };
 
 #endif // CPROJECTTEMPLATEFILEFINDER_HPP

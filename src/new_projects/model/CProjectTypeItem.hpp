@@ -3,20 +3,19 @@
 
 #include <QList>
 
-struct SProjectTypeInfo;
+#include "src/parser/CProjectTypeXmlFileReader.hpp"
 
 struct SProjectTypeItem {
-    SProjectTypeItem(SProjectTypeInfo *info)
+    SProjectTypeItem(const SProjectTypeInfo &info)
         : _info(info), _parent(nullptr) { }
 
     ~SProjectTypeItem() {
         qDeleteAll(_children);
     }
 
+    SProjectTypeInfo _info;
     SProjectTypeItem *_parent;
     QList<SProjectTypeItem*> _children;
-
-    SProjectTypeInfo *_info;
 };
 
 #endif // CPROJECTTYPEITEM_HPP

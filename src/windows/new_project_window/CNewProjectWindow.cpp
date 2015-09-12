@@ -1,7 +1,7 @@
 #include "CNewProjectWindow.hpp"
 #include "ui_NewProjectWindow.h"
 
-#include "src/new_projects/project_type_item/CProjectTypeItem.hpp"
+#include "src/new_projects/model/CProjectTypeModel.hpp"
 #include "src/file_finder/CProjectTemplateFileFinder.hpp"
 #include "src/CConstants.hpp"
 
@@ -18,17 +18,15 @@ CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
 
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->createButton, SIGNAL(clicked()), this, SLOT(createNewProject()));
-    connect(ui->treeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(buildTemplateOptions()));
 
     /* DOKLEJONE */
-    auto standardModel = new QStandardItemModel;
-    QStandardItem *item = standardModel->invisibleRootItem();
+    auto standardModel = new CProjectTypeModel();
 
     CProjectTemplateFileFinder finder(
-        CConstant::getProjectizerMainFolder() + CConstant::getTemplatesFolder(),
-        item
+        CConstant::getProjectizerMainFolder() + CConstant::getTemplatesFolder()
     );
-    finder.findTemplateFilesBFS();
+
+    standardModel->setRootNode(finder.findTemplateFilesBFS());
 
     ui->treeView->setModel(standardModel);
     ui->treeView->expandAll();
@@ -58,6 +56,4 @@ void CNewProjectWindow::createNewProject() {
 }
 
 #include <iostream>
-void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) {
-    QModelIndex selected_index = selected.indexes().first();
-}
+void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) { }
