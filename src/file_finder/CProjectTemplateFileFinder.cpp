@@ -6,7 +6,6 @@
 CProjectTemplateFileFinder::CProjectTemplateFileFinder(QString directory)
     : _root_directory(directory) { }
 
-#include <iostream>
 CProjectTypeItem *CProjectTemplateFileFinder::findTemplateFilesBFS(CProjectTypeItem *rootItem) {
     if (QDir(this->_root_directory).exists()) {
         QList<QPair<QFileInfo, CProjectTypeItem*>> entries;
@@ -23,11 +22,9 @@ CProjectTypeItem *CProjectTemplateFileFinder::findTemplateFilesBFS(CProjectTypeI
 
                 current_parent->appendChild(new_parent);
                 entries.push_back(qMakePair(entry, new_parent));
-                std::cout << entry.absoluteFilePath().toStdString() << "\n";
             }
 
             for (QFileInfo file : directory.entryInfoList(QStringList() << "*.xml", QDir::NoDotAndDotDot | QDir::Files)) {
-                std::cout << file.absoluteFilePath().toStdString() << "\n";
             }
         }
     }

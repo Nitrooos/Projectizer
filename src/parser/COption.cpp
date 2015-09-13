@@ -1,5 +1,4 @@
 #include "COption.hpp"
-#include <iostream>
 
 const QMap<QString, COption::EType> COption::mapping = {
     {"checkbox", COption::EType::CHECKBOX},

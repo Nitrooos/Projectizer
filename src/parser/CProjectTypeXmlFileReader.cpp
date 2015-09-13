@@ -4,8 +4,6 @@
 #include <QDomDocument>
 #include <QFile>
 
-#include <iostream>
-
 CProjectTypeXmlFileReader::CProjectTypeXmlFileReader(QString file_name) : AXmlFileReader(file_name) { }
 
 SProjectTypeInfo CProjectTypeXmlFileReader::getProjectTypeInfo() const {

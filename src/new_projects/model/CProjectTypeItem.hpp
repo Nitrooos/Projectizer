@@ -12,6 +12,7 @@ class CProjectTypeItem {
         ~CProjectTypeItem();
 
         void appendChild(CProjectTypeItem *child);
+        const SProjectTypeInfo &getProjectTypeInfo() const;
 
         CProjectTypeItem* child(int row);
         int childCount() const;

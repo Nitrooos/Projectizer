@@ -1,8 +1,6 @@
 #include "application/CApplication.hpp"
 //#include <QElapsedTimer>
 
-#include <iostream>
-
 int main(int argc, char *argv[]) {
     /*CProjectXmlFileReader reader("../Projectizer/project.xml");
     QElapsedTimer timer;

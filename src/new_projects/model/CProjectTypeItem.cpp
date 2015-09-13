@@ -7,6 +7,10 @@ CProjectTypeItem::~CProjectTypeItem()  {
     qDeleteAll(this->_children);
 }
 
+const SProjectTypeInfo& CProjectTypeItem::getProjectTypeInfo() const {
+    return this->_info;
+}
+
 void CProjectTypeItem::appendChild(CProjectTypeItem *child) {
     this->_children.append(child);
 }

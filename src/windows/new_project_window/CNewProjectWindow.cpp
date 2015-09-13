@@ -2,6 +2,7 @@
 #include "ui_NewProjectWindow.h"
 
 #include "src/file_finder/CProjectTemplateFileFinder.hpp"
+#include "src/new_projects/model/CProjectTypeItem.hpp"
 #include "src/CConstants.hpp"
 
 #include <QTreeView>
@@ -15,14 +16,16 @@ CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
     ui->setupUi(this);
     ui->treeView->header()->setVisible(false);
 
-    connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(close()));
-    connect(ui->createButton, SIGNAL(clicked()), this, SLOT(createNewProject()));
-
     CProjectTemplateFileFinder finder(CConstant::getProjectizerMainFolder() + CConstant::getTemplatesFolder());
     finder.findTemplateFilesBFS(this->_model->getRootItem());
 
     ui->treeView->setModel(this->_model);
     ui->treeView->expandAll();
+
+    connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->createButton, SIGNAL(clicked()), this, SLOT(createNewProject()));
+    connect(ui->treeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            this, SLOT(buildTemplateOptions(const QItemSelection &, const QItemSelection &)));
 }
 
 CNewProjectWindow::~CNewProjectWindow() {
@@ -53,4 +56,9 @@ void CNewProjectWindow::createNewProject() {
 }
 
 #include <iostream>
-void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) { }
+void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) {
+    Q_UNUSED(deselected);
+
+    CProjectTypeItem *item = static_cast<CProjectTypeItem*>(selected.indexes().first().internalPointer());
+    std::cout << item->getProjectTypeInfo()._name.toStdString() << std::endl;
+}
