@@ -1,6 +1,8 @@
 #ifndef CNEWPROJECTDIALOG_HPP
 #define CNEWPROJECTDIALOG_HPP
 
+#include "src/new_projects/model/CProjectTypeModel.hpp"
+
 #include <QMainWindow>
 #include <QItemSelection>
 
@@ -15,6 +17,7 @@ class CNewProjectWindow : public QMainWindow {
     Q_OBJECT
     public:
        CNewProjectWindow(QString const& directory = "", QWidget *parent = 0);
+       ~CNewProjectWindow();
     private slots:
        void createNewProject();
        void buildTemplateOptions(const QItemSelection& selected, const QItemSelection& deselected);
@@ -24,6 +27,7 @@ class CNewProjectWindow : public QMainWindow {
 
         Ui::NewProjectWindow *ui;
         QString _directory;
+        CProjectTypeModel *_model;
 };
 
 #endif // CNEWPROJECTDIALOG_HPP

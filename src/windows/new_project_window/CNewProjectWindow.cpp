@@ -1,7 +1,6 @@
 #include "CNewProjectWindow.hpp"
 #include "ui_NewProjectWindow.h"
 
-#include "src/new_projects/model/CProjectTypeModel.hpp"
 #include "src/file_finder/CProjectTemplateFileFinder.hpp"
 #include "src/CConstants.hpp"
 
@@ -11,7 +10,7 @@
 #include <QKeyEvent>
 
 CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::NewProjectWindow),  _directory(directory)
+    : QMainWindow(parent), ui(new Ui::NewProjectWindow),  _directory(directory), _model(new CProjectTypeModel())
 {
     ui->setupUi(this);
     ui->treeView->header()->setVisible(false);
@@ -19,17 +18,15 @@ CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->createButton, SIGNAL(clicked()), this, SLOT(createNewProject()));
 
-    /* DOKLEJONE */
-    auto standardModel = new CProjectTypeModel();
+    CProjectTemplateFileFinder finder(CConstant::getProjectizerMainFolder() + CConstant::getTemplatesFolder());
+    finder.findTemplateFilesBFS(this->_model->getRootItem());
 
-    CProjectTemplateFileFinder finder(
-        CConstant::getProjectizerMainFolder() + CConstant::getTemplatesFolder()
-    );
-
-    standardModel->setRootNode(finder.findTemplateFilesBFS());
-
-    ui->treeView->setModel(standardModel);
+    ui->treeView->setModel(this->_model);
     ui->treeView->expandAll();
+}
+
+CNewProjectWindow::~CNewProjectWindow() {
+    delete this->_model;
 }
 
 /*

@@ -1,87 +1,95 @@
 #include "CProjectTypeModel.hpp"
 #include "src/new_projects/model/CProjectTypeItem.hpp"
 
-CProjectTypeModel::CProjectTypeModel(QObject *parent) : QAbstractItemModel(parent), _root_node(nullptr) { }
-
-CProjectTypeModel::~CProjectTypeModel() {
-    delete this->_root_node;
+CProjectTypeModel::CProjectTypeModel(QObject *parent) : QAbstractItemModel(parent) {
+    this->_root_item = new CProjectTypeItem(SProjectTypeInfo{"root", {}, {nullptr}});
 }
 
-void CProjectTypeModel::setRootNode(SProjectTypeItem *node) {
-    delete this->_root_node;
-    this->_root_node = node;
+CProjectTypeModel::~CProjectTypeModel() {
+    delete this->_root_item;
+}
+
+CProjectTypeItem* CProjectTypeModel::getRootItem() {
+    return this->_root_item;
 }
 
 QModelIndex CProjectTypeModel::index(int row, int column, const QModelIndex &parent) const {
-    if (!_root_node || row < 0 || column < 0) {
+    if (!this->hasIndex(row, column, parent)) {
         return QModelIndex();
     }
 
-    SProjectTypeItem *parentNode = nodeFromIndex(parent);
-    SProjectTypeItem *childNode = parentNode->_children.value(row);
-    if (!childNode) {
+    CProjectTypeItem *parentItem;
+
+    if (!parent.isValid()) {
+        parentItem = this->_root_item;
+    } else {
+        parentItem = static_cast<CProjectTypeItem*>(parent.internalPointer());
+    }
+
+    CProjectTypeItem *childItem = parentItem->child(row);
+    if (childItem) {
+        return createIndex(row, column, childItem);
+    } else {
         return QModelIndex();
     }
-    return createIndex(row, column, childNode);
 }
 
-SProjectTypeItem* CProjectTypeModel::nodeFromIndex(const QModelIndex &index) const {
-    if (index.isValid()) {
-        return static_cast<SProjectTypeItem*>(index.internalPointer());
-    } else {
-        return this->_root_node;
+QModelIndex CProjectTypeModel::parent(const QModelIndex &index) const {
+    if (!index.isValid()) {
+        return QModelIndex();
     }
+
+    CProjectTypeItem *childItem = static_cast<CProjectTypeItem*>(index.internalPointer());
+    CProjectTypeItem *parentItem = childItem->parentItem();
+
+    if (parentItem == this->_root_item) {
+        return QModelIndex();
+    }
+
+    return createIndex(parentItem->row(), 0, parentItem);
 }
 
 int CProjectTypeModel::rowCount(const QModelIndex &parent) const {
+    CProjectTypeItem *parentItem;
     if (parent.column() > 0) {
         return 0;
     }
-    SProjectTypeItem *parentNode = nodeFromIndex(parent);
-    if (!parentNode) {
-        return 0;
+
+    if (!parent.isValid()) {
+        parentItem = this->_root_item;
+    } else {
+        parentItem = static_cast<CProjectTypeItem*>(parent.internalPointer());
     }
 
-    return parentNode->_children.count();
+    return parentItem->childCount();
 }
 
-int CProjectTypeModel::columnCount(const QModelIndex &) const {
-    return 2;
-}
-
-QModelIndex CProjectTypeModel::parent(const QModelIndex &child) const {
-    SProjectTypeItem *node = nodeFromIndex(child);
-    if (!node) {
-        return QModelIndex();
+int CProjectTypeModel::columnCount(const QModelIndex &parent) const {
+    if (parent.isValid()) {
+        return static_cast<CProjectTypeItem*>(parent.internalPointer())->columnCount();
+    } else {
+        return this->_root_item->columnCount();
     }
-
-    SProjectTypeItem *parentNode = node->_parent;
-    if (!parentNode) {
-        return QModelIndex();
-    }
-
-    SProjectTypeItem *grandparentNode = parentNode->_parent;
-    if (!grandparentNode) {
-        return QModelIndex();
-    }
-
-    int row = grandparentNode->_children.indexOf(parentNode);
-    return createIndex(row, 0, parentNode);
 }
 
 QVariant CProjectTypeModel::data(const QModelIndex &index, int role) const {
+    if (!index.isValid()) {
+        return QVariant();
+    }
+
     if (role != Qt::DisplayRole) {
         return QVariant();
     }
 
-    SProjectTypeItem *node = nodeFromIndex(index);
-    if (!node) {
-        return QVariant();
+    CProjectTypeItem *item = static_cast<CProjectTypeItem*>(index.internalPointer());
+
+    return item->data(index.column());
+}
+
+Qt::ItemFlags CProjectTypeModel::flags(const QModelIndex &index) const {
+    if (!index.isValid()) {
+        return 0;
     }
 
-    if (index.column() == 0) {
-        return node->_info._name;
-    }
-
-    return QVariant();
+    return QAbstractItemModel::flags(index);
 }

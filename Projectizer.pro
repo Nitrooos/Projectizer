@@ -28,7 +28,8 @@ SOURCES += src/main.cpp\
     src/application/CApplication.cpp \
     src/windows/new_project_window/CNewProjectWindow.cpp \
     src/file_finder/CProjectTemplateFileFinder.cpp \
-    src/new_projects/model/CProjectTypeModel.cpp
+    src/new_projects/model/CProjectTypeModel.cpp \
+    src/new_projects/model/CProjectTypeItem.cpp
 
 HEADERS  += \
     src/windows/main_window/CMainWindow.hpp \

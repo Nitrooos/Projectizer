@@ -2,20 +2,27 @@
 #define CPROJECTTYPEITEM_HPP
 
 #include <QList>
+#include <QVariant>
 
 #include "src/parser/CProjectTypeXmlFileReader.hpp"
 
-struct SProjectTypeItem {
-    SProjectTypeItem(const SProjectTypeInfo &info)
-        : _info(info), _parent(nullptr) { }
+class CProjectTypeItem {
+    public:
+        CProjectTypeItem(const SProjectTypeInfo &info, CProjectTypeItem *parent = nullptr);
+        ~CProjectTypeItem();
 
-    ~SProjectTypeItem() {
-        qDeleteAll(_children);
-    }
+        void appendChild(CProjectTypeItem *child);
 
-    SProjectTypeInfo _info;
-    SProjectTypeItem *_parent;
-    QList<SProjectTypeItem*> _children;
+        CProjectTypeItem* child(int row);
+        int childCount() const;
+        int columnCount() const;
+        QVariant data(int column) const;
+        int row() const;
+        CProjectTypeItem* parentItem();
+    private:
+        SProjectTypeInfo _info;
+        CProjectTypeItem *_parent;
+        QList<CProjectTypeItem*> _children;
 };
 
 #endif // CPROJECTTYPEITEM_HPP
