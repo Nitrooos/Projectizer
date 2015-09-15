@@ -9,6 +9,8 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QKeyEvent>
+#include <QLayout>
+#include <QCheckBox>
 
 CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::NewProjectWindow),  _directory(directory), _model(new CProjectTypeModel())
@@ -61,4 +63,11 @@ void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, con
 
     CProjectTypeItem *item = static_cast<CProjectTypeItem*>(selected.indexes().first().internalPointer());
     std::cout << item->getProjectTypeInfo()._name.toStdString() << std::endl;
+
+    // wyczyścić layout optionsLayout z potomków...
+
+    auto hLayout1 = new QHBoxLayout();
+    hLayout1->addWidget(new QCheckBox("test"));
+
+    ui->optionsLayout->addLayout(hLayout1);
 }
