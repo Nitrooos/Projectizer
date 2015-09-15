@@ -1,5 +1,10 @@
 #include "COption.hpp"
 
+#include <QWidget>
+#include <QLayout>
+#include <QCheckBox>
+#include <QLineEdit>
+
 const QMap<QString, COption::EType> COption::mapping = {
     {"checkbox", COption::EType::CHECKBOX},
     {"text", COption::EType::TEXT},
@@ -61,10 +66,22 @@ void COptionCheckbox::fill(const QDomNode &node) {
     }
 }
 
+QHBoxLayout *COptionCheckbox::render(QWidget *parent) const {
+    auto layout = new QHBoxLayout(parent);
+    layout->addWidget(new QCheckBox(this->_name, parent));
+    return layout;
+}
+
 QString COptionCheckbox::print() const {
     return COption::print() +
            "   label: " + _label + "\n" +
            "   is_checked: " +  QString::number(_is_checked) + "\n";
+}
+
+QHBoxLayout *COptionTextInput::render(QWidget *parent) const {
+    auto layout = new QHBoxLayout(parent);
+    layout->addWidget(new QLineEdit(parent));
+    return layout;
 }
 
 void COptionSelectable::fill(const QDomNode &node) {
@@ -104,4 +121,12 @@ QString COptionSelectable::print() const {
         result += value.print();
     }
     return result;
+}
+
+QHBoxLayout *COptionRadioGroup::render(QWidget *parent) const {
+    return nullptr;
+}
+
+QHBoxLayout *COptionSelectBox::render(QWidget *parent) const {
+    return nullptr;
 }

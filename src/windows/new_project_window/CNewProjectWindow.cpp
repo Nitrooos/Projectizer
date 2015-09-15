@@ -61,13 +61,19 @@ void CNewProjectWindow::createNewProject() {
 void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) {
     Q_UNUSED(deselected);
 
-    CProjectTypeItem *item = static_cast<CProjectTypeItem*>(selected.indexes().first().internalPointer());
-    std::cout << item->getProjectTypeInfo()._name.toStdString() << std::endl;
+    CProjectTypeItem *selected_project_type = static_cast<CProjectTypeItem*>(selected.indexes().first().internalPointer());
+    std::cout << selected_project_type->getProjectTypeInfo()._name.toStdString() << std::endl;
 
-    // wyczyścić layout optionsLayout z potomków...
+    QLayoutItem *item;
+    while ((item = ui->optionsLayout->takeAt(0)) != 0) {
+        delete item;
+    }
 
-    auto hLayout1 = new QHBoxLayout();
-    hLayout1->addWidget(new QCheckBox("test"));
-
-    ui->optionsLayout->addLayout(hLayout1);
+    for (auto option : selected_project_type->getProjectTypeInfo()._options) {
+        QHBoxLayout *rendered_layout = option->render();
+        if (rendered_layout != nullptr) {
+            std::cout << "OK" << std::endl;
+            ui->optionsLayout->addLayout(rendered_layout);
+        }
+    }
 }
