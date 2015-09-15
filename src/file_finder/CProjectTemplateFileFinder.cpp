@@ -9,31 +9,34 @@ CProjectTemplateFileFinder::CProjectTemplateFileFinder(QString directory)
 
 CProjectTypeItem *CProjectTemplateFileFinder::findTemplateFilesBFS(CProjectTypeItem *rootItem) {
     if (QDir(this->_root_directory).exists()) {
-        QList<QPair<QFileInfo, CProjectTypeItem*>> entries;
+        EntryList entries;
         entries.push_back(qMakePair(QFileInfo(this->_root_directory), rootItem));
 
         while (!entries.empty()) {
             QDir directory(entries.front().first.absoluteFilePath(), "", QDir::Name);
             CProjectTypeItem *current_parent = entries.front().second;
             entries.pop_front();
-
-            for (QFileInfo entry : directory.entryInfoList(QDir::NoDotAndDotDot | QDir::Dirs)) {
-                SProjectTypeInfo info;
-                QDir d(entry.absoluteFilePath(), "", QDir::Name);
-                for (QFileInfo file : d.entryInfoList(QStringList() << "*.xml", QDir::NoDotAndDotDot | QDir::Files)) {
-                    CProjectTypeXmlFileReader reader(file.absoluteFilePath());
-                    if (reader.parse()) {
-                        info = reader.getProjectTypeInfo();
-                        break;
-                    }
-                }
-
-                info._name = entry.baseName();
-                auto next_parent = new CProjectTypeItem(info, current_parent);
-                current_parent->appendChild(next_parent);
-                entries.push_back(qMakePair(entry, next_parent));
-            }
+            this->findTemplatesInDirectory(directory, current_parent, entries);
         }
     }
     return rootItem;
+}
+
+void CProjectTemplateFileFinder::findTemplatesInDirectory(QDir directory, CProjectTypeItem *current_parent, EntryList &entries) {
+    for (QFileInfo entry : directory.entryInfoList(QDir::NoDotAndDotDot | QDir::Dirs)) {
+        SProjectTypeInfo info;
+        QDir d(entry.absoluteFilePath(), "", QDir::Name);
+        for (QFileInfo file : d.entryInfoList(QStringList() << "*.xml", QDir::NoDotAndDotDot | QDir::Files)) {
+            CProjectTypeXmlFileReader reader(file.absoluteFilePath());
+            if (reader.parse()) {
+                info = reader.getProjectTypeInfo();
+                break;
+            }
+        }
+
+        info._name = entry.baseName();
+        auto next_parent = new CProjectTypeItem(info, current_parent);
+        current_parent->appendChild(next_parent);
+        entries.push_back(qMakePair(entry, next_parent));
+    }
 }
