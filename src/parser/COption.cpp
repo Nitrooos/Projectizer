@@ -66,7 +66,14 @@ void COptionCheckbox::fill(const QDomNode &node) {
 }
 
 QList<QWidget *> COptionCheckbox::render(QWidget *parent) const {
-    QList<QWidget*> list{new QCheckBox(this->_name, parent)};
+    QList<QWidget*> list;
+
+    QCheckBox *checkbox = new QCheckBox(this->_label, parent);
+    if (this->_is_checked) {
+        checkbox->setChecked(true);
+    }
+    list.push_back(checkbox);
+
     return list;
 }
 
