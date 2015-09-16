@@ -22,7 +22,7 @@ class COption {
     public:
         static COption *getOptionPerType(const QString &type);
         virtual void fill(const QDomNode &node);
-        virtual QHBoxLayout *render(QWidget *parent = nullptr) const = 0;
+        virtual QList<QWidget*> render(QWidget *parent = nullptr) const = 0;
         virtual QString print() const;
     protected:
         enum EType { CHECKBOX, TEXT, RADIO, SELECT };
@@ -34,7 +34,7 @@ class COption {
     class COptionCheckbox : public COption {
         public:
             virtual void fill(const QDomNode &node);
-            virtual QHBoxLayout *render(QWidget *parent = nullptr) const;
+            virtual QList<QWidget*> render(QWidget *parent = nullptr) const;
             virtual QString print() const;
         protected:
             QString _label;
@@ -43,7 +43,7 @@ class COption {
 
     class COptionTextInput : public COption {
         public:
-            virtual QHBoxLayout *render(QWidget *parent = nullptr) const;
+            virtual QList<QWidget*> render(QWidget *parent = nullptr) const;
     };
 
     class COptionSelectable : public COption {
@@ -56,11 +56,11 @@ class COption {
     };
 
         class COptionRadioGroup : public COptionSelectable {
-            virtual QHBoxLayout *render(QWidget *parent = nullptr) const;
+            virtual QList<QWidget*> render(QWidget *parent = nullptr) const;
         };
 
         class COptionSelectBox : public COptionSelectable {
-            virtual QHBoxLayout *render(QWidget *parent = nullptr) const;
+            virtual QList<QWidget*> render(QWidget *parent = nullptr) const;
         };
 
 #endif // COPTION_HPP

@@ -1,12 +1,12 @@
 #ifndef CNEWPROJECTDIALOG_HPP
 #define CNEWPROJECTDIALOG_HPP
 
+#include "src/new_projects/options_layout/CLayoutManager.hpp"
 #include "src/new_projects/model/CProjectTypeModel.hpp"
 
 #include <QMainWindow>
 #include <QItemSelection>
 
-class QStandardItem;
 class QKeyEvent;
 
 namespace Ui {
@@ -23,9 +23,9 @@ class CNewProjectWindow : public QMainWindow {
        void buildTemplateOptions(const QItemSelection& selected, const QItemSelection& deselected);
     private:
         void keyPressEvent(QKeyEvent *event);
-        QList<QStandardItem *> prepareRow(const QString &text);
 
         Ui::NewProjectWindow *ui;
+        CLayoutManager *_layout_manager;
         QString _directory;
         CProjectTypeModel *_model;
 };

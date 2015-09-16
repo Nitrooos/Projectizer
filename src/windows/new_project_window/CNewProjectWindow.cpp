@@ -6,17 +6,16 @@
 #include "src/CConstants.hpp"
 
 #include <QTreeView>
-#include <QStandardItemModel>
-#include <QStandardItem>
 #include <QKeyEvent>
 #include <QLayout>
-#include <QCheckBox>
 
 CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::NewProjectWindow),  _directory(directory), _model(new CProjectTypeModel())
 {
     ui->setupUi(this);
     ui->treeView->header()->setVisible(false);
+
+    this->_layout_manager = new CLayoutManager(ui->layoutOptionsWidget, ui->optionsLayout);
 
     CProjectTemplateFileFinder finder(CConstant::getProjectizerMainFolder() + CConstant::getTemplatesFolder());
     finder.findTemplateFilesBFS(this->_model->getRootItem());
@@ -31,6 +30,7 @@ CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
 }
 
 CNewProjectWindow::~CNewProjectWindow() {
+    delete this->_layout_manager;
     delete this->_model;
 }
 
@@ -57,23 +57,15 @@ void CNewProjectWindow::createNewProject() {
     close();
 }
 
-#include <iostream>
 void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) {
     Q_UNUSED(deselected);
 
+    // pobierz informacje o zaznaczonym typie projektu
     CProjectTypeItem *selected_project_type = static_cast<CProjectTypeItem*>(selected.indexes().first().internalPointer());
-    std::cout << selected_project_type->getProjectTypeInfo()._name.toStdString() << std::endl;
 
-    QLayoutItem *item;
-    while ((item = ui->optionsLayout->takeAt(0)) != 0) {
-        delete item;
-    }
-
+    this->_layout_manager->clearMainLayout();
     for (auto option : selected_project_type->getProjectTypeInfo()._options) {
-        QHBoxLayout *rendered_layout = option->render();
-        if (rendered_layout != nullptr) {
-            std::cout << "OK" << std::endl;
-            ui->optionsLayout->addLayout(rendered_layout);
-        }
+        // dodawaj kolejne opcje (każda składa się z listy Widget'ów
+        this->_layout_manager->addLayoutWithWidgets(option->render(ui->layoutOptionsWidget));
     }
 }

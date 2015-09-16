@@ -1,7 +1,6 @@
 #include "COption.hpp"
 
 #include <QWidget>
-#include <QLayout>
 #include <QCheckBox>
 #include <QLineEdit>
 
@@ -66,10 +65,9 @@ void COptionCheckbox::fill(const QDomNode &node) {
     }
 }
 
-QHBoxLayout *COptionCheckbox::render(QWidget *parent) const {
-    auto layout = new QHBoxLayout(parent);
-    layout->addWidget(new QCheckBox(this->_name, parent));
-    return layout;
+QList<QWidget *> COptionCheckbox::render(QWidget *parent) const {
+    QList<QWidget*> list{new QCheckBox(this->_name, parent)};
+    return list;
 }
 
 QString COptionCheckbox::print() const {
@@ -78,10 +76,9 @@ QString COptionCheckbox::print() const {
            "   is_checked: " +  QString::number(_is_checked) + "\n";
 }
 
-QHBoxLayout *COptionTextInput::render(QWidget *parent) const {
-    auto layout = new QHBoxLayout(parent);
-    layout->addWidget(new QLineEdit(parent));
-    return layout;
+QList<QWidget *> COptionTextInput::render(QWidget *parent) const {
+    QList<QWidget*> list{new QLineEdit(parent)};
+    return list;
 }
 
 void COptionSelectable::fill(const QDomNode &node) {
@@ -123,10 +120,10 @@ QString COptionSelectable::print() const {
     return result;
 }
 
-QHBoxLayout *COptionRadioGroup::render(QWidget *parent) const {
-    return nullptr;
+QList<QWidget *> COptionRadioGroup::render(QWidget *parent) const {
+    return QList<QWidget*>();
 }
 
-QHBoxLayout *COptionSelectBox::render(QWidget *parent) const {
-    return nullptr;
+QList<QWidget *> COptionSelectBox::render(QWidget *parent) const {
+    return QList<QWidget*>();
 }
