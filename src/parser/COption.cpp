@@ -1,6 +1,7 @@
 #include "COption.hpp"
 
 #include <QWidget>
+#include <QLabel>
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QRadioButton>
@@ -22,9 +23,13 @@ QString CValue::print() const {
 
 void COption::fill(const QDomNode &node) {
     if (node.isElement()) {
-        QDomNodeList names = node.toElement().elementsByTagName("name");
+        QDomNodeList names = node.toElement().elementsByTagName("name"),
+                     ids =   node.toElement().elementsByTagName("id");
         if (names.size() > 0) {
             _name = names.item(0).toElement().text();
+        }
+        if (ids.size() > 0) {
+            _id = ids.item(0).toElement().text();
         }
     }
 }
@@ -48,6 +53,14 @@ COption *COption::getOptionPerType(const QString &type_name) {
         }
     }
     return nullptr;
+}
+
+QList<QWidget*> COption::render(QWidget *parent) const {
+    QList<QWidget*> list;
+    if (this->_name != "") {
+        list.push_back(new QLabel(this->_name, parent));
+    }
+    return list;
 }
 
 void COptionCheckbox::fill(const QDomNode &node) {
@@ -133,6 +146,7 @@ QString COptionSelectable::print() const {
 QList<QWidget *> COptionRadioGroup::render(QWidget *parent) const {
     QList<QWidget*> list;
     QButtonGroup btn_group(parent);
+
     for (auto radio_option : this->_values) {
         auto radio = new QRadioButton(radio_option._label, parent);
         btn_group.addButton(radio);
@@ -147,10 +161,15 @@ QList<QWidget *> COptionRadioGroup::render(QWidget *parent) const {
 }
 
 QList<QWidget *> COptionSelectBox::render(QWidget *parent) const {
-    QList<QWidget*> list;
+    QList<QWidget*> list = COption::render(parent);
+
     auto *combo = new QComboBox(parent);
     for (auto combo_option : this->_values) {
-        combo->addItem(combo_option._label);
+        if (combo_option._is_default) {
+            combo->insertItem(0, combo_option._label);
+        } else {
+            combo->addItem(combo_option._label);
+        }
     }
     list.push_back(combo);
 

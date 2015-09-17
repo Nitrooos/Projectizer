@@ -22,13 +22,13 @@ class COption {
     public:
         static COption *getOptionPerType(const QString &type);
         virtual void fill(const QDomNode &node);
-        virtual QList<QWidget*> render(QWidget *parent = nullptr) const = 0;
+        virtual QList<QWidget*> render(QWidget *parent = nullptr) const;
         virtual QString print() const;
     protected:
         enum EType { CHECKBOX, TEXT, RADIO, SELECT };
         static const QMap<QString, EType> mapping;
 
-        QString _name;
+        QString _id, _name;
 };
 
     class COptionCheckbox : public COption {
