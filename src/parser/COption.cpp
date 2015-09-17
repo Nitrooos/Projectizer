@@ -3,6 +3,9 @@
 #include <QWidget>
 #include <QCheckBox>
 #include <QLineEdit>
+#include <QRadioButton>
+#include <QButtonGroup>
+#include <QComboBox>
 
 const QMap<QString, COption::EType> COption::mapping = {
     {"checkbox", COption::EType::CHECKBOX},
@@ -128,9 +131,28 @@ QString COptionSelectable::print() const {
 }
 
 QList<QWidget *> COptionRadioGroup::render(QWidget *parent) const {
-    return QList<QWidget*>();
+    QList<QWidget*> list;
+    QButtonGroup btn_group(parent);
+    for (auto radio_option : this->_values) {
+        auto radio = new QRadioButton(radio_option._label, parent);
+        btn_group.addButton(radio);
+        if (radio_option._is_default) {
+            radio->setChecked(true);
+        }
+
+        list.push_back(radio);
+    }
+
+    return list;
 }
 
 QList<QWidget *> COptionSelectBox::render(QWidget *parent) const {
-    return QList<QWidget*>();
+    QList<QWidget*> list;
+    auto *combo = new QComboBox(parent);
+    for (auto combo_option : this->_values) {
+        combo->addItem(combo_option._label);
+        list.push_back(combo);
+    }
+
+    return list;
 }

@@ -8,12 +8,12 @@
 class QHBoxLayout;
 class QWidget;
 
-class CValue {
+struct CValue {
     public:
         CValue(QString id, QString label, bool is_default)
             : _id(id), _label(label), _is_default(is_default) { }
         QString print() const;
-    private:
+
         QString _id, _label;
         bool _is_default;
 };
