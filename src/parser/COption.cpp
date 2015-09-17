@@ -151,8 +151,8 @@ QList<QWidget *> COptionSelectBox::render(QWidget *parent) const {
     auto *combo = new QComboBox(parent);
     for (auto combo_option : this->_values) {
         combo->addItem(combo_option._label);
-        list.push_back(combo);
     }
+    list.push_back(combo);
 
     return list;
 }
