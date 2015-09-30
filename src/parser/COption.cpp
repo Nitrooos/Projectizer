@@ -82,7 +82,7 @@ void COptionCheckbox::fill(const QDomNode &node) {
 }
 
 QList<QWidget *> COptionCheckbox::render(QWidget *parent) const {
-    QList<QWidget*> list;
+    QList<QWidget*> list = COption::render(parent);
 
     QCheckBox *checkbox = new QCheckBox(this->_label, parent);
     if (this->_is_checked) {
@@ -100,7 +100,8 @@ QString COptionCheckbox::print() const {
 }
 
 QList<QWidget *> COptionTextInput::render(QWidget *parent) const {
-    QList<QWidget*> list{new QLineEdit(parent)};
+    QList<QWidget*> list = COption::render(parent);
+    list.append(new QLineEdit(parent));
     return list;
 }
 
@@ -144,7 +145,7 @@ QString COptionSelectable::print() const {
 }
 
 QList<QWidget *> COptionRadioGroup::render(QWidget *parent) const {
-    QList<QWidget*> list;
+    QList<QWidget*> list = COption::render(parent);
     QButtonGroup btn_group(parent);
 
     for (auto radio_option : this->_values) {
