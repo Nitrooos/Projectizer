@@ -167,6 +167,7 @@ QList<QWidget *> COptionSelectBox::render(QWidget *parent) const {
     for (auto combo_option : this->_values) {
         if (combo_option._is_default) {
             combo->insertItem(0, combo_option._label);
+            combo->setCurrentIndex(0);
         } else {
             combo->addItem(combo_option._label);
         }
