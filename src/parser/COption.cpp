@@ -151,8 +151,9 @@ QList<QWidget *> COptionRadioGroup::render(QWidget *parent) const {
 
     auto container = new QGroupBox(this->_name, parent);
     container->setLayout(new QVBoxLayout(container));
-    QButtonGroup btn_group(container);
+    container->layout()->setContentsMargins(0, 5, 0, 0);
 
+    QButtonGroup btn_group(container);
     for (auto radio_option : this->_values) {
         auto radio = new QRadioButton(radio_option._label, container);
         btn_group.addButton(radio);
