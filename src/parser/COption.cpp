@@ -1,12 +1,14 @@
 #include "COption.hpp"
 
 #include <QWidget>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QRadioButton>
 #include <QButtonGroup>
 #include <QComboBox>
+#include <QGroupBox>
 
 const QMap<QString, COption::EType> COption::mapping = {
     {"checkbox", COption::EType::CHECKBOX},
@@ -145,18 +147,21 @@ QString COptionSelectable::print() const {
 }
 
 QList<QWidget *> COptionRadioGroup::render(QWidget *parent) const {
-    QList<QWidget*> list = COption::render(parent);
-    QButtonGroup btn_group(parent);
+    QList<QWidget*> list;
+
+    auto container = new QGroupBox(this->_name, parent);
+    container->setLayout(new QVBoxLayout(container));
+    QButtonGroup btn_group(container);
 
     for (auto radio_option : this->_values) {
-        auto radio = new QRadioButton(radio_option._label, parent);
+        auto radio = new QRadioButton(radio_option._label, container);
         btn_group.addButton(radio);
+        container->layout()->addWidget(radio);
         if (radio_option._is_default) {
             radio->setChecked(true);
         }
-
-        list.push_back(radio);
     }
+    list.push_back(container);
 
     return list;
 }

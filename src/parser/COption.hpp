@@ -6,6 +6,7 @@
 #include <QString>
 
 class QHBoxLayout;
+class QVBoxLayout;
 class QWidget;
 
 struct CValue {
