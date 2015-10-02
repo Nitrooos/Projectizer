@@ -28,6 +28,7 @@ class CNewProjectWindow : public QMainWindow {
         CLayoutManager *_layout_manager;
         QString _directory;
         CProjectTypeModel *_model;
+        CProjectTypeItem *_activeProjectItem;
 };
 
 #endif // CNEWPROJECTDIALOG_HPP

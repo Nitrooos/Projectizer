@@ -10,7 +10,8 @@
 #include <QLayout>
 
 CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::NewProjectWindow),  _directory(directory), _model(new CProjectTypeModel())
+    : QMainWindow(parent), ui(new Ui::NewProjectWindow),  _directory(directory), _model(new CProjectTypeModel()),
+      _activeProjectItem(nullptr)
 {
     ui->setupUi(this);
     ui->treeView->header()->setVisible(false);
@@ -54,14 +55,18 @@ void CNewProjectWindow::keyPressEvent(QKeyEvent *event) {
  */
 
 void CNewProjectWindow::createNewProject() {
-    close();
+    if (this->_activeProjectItem == nullptr) {
+        return;
+    }
+
+
 }
 
 void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) {
     Q_UNUSED(deselected);
 
     // pobierz informacje o zaznaczonym typie projektu
-    CProjectTypeItem *selected_project_type = static_cast<CProjectTypeItem*>(selected.indexes().first().internalPointer());
+    this->_activeProjectItem = static_cast<CProjectTypeItem*>(selected.indexes().first().internalPointer());
 
     this->_layout_manager->clearMainLayout();
     for (auto option : selected_project_type->getProjectTypeInfo()._options) {

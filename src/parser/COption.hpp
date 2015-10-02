@@ -22,19 +22,21 @@ class COption {
     public:
         static COption *getOptionPerType(const QString &type);
         virtual void fill(const QDomNode &node);
-        virtual QList<QWidget*> render(QWidget *parent = nullptr) const;
+        virtual QList<QWidget*> render(QWidget *parent = nullptr);
         virtual QString value() const = 0;
     protected:
         enum EType { CHECKBOX, TEXT, RADIO, SELECT };
         static const QMap<QString, EType> mapping;
 
         QString _id, _name;
+        QList<QWidget*> _widgets;
 };
 
     class COptionCheckbox : public COption {
         public:
             virtual void fill(const QDomNode &node);
-            virtual QList<QWidget*> render(QWidget *parent = nullptr) const;
+            virtual QList<QWidget*> render(QWidget *parent = nullptr);
+            virtual QString value() const;
         protected:
             QString _label;
             bool _is_checked;
@@ -42,7 +44,7 @@ class COption {
 
     class COptionTextInput : public COption {
         public:
-            virtual QList<QWidget*> render(QWidget *parent = nullptr) const;
+            virtual QList<QWidget*> render(QWidget *parent = nullptr);
     };
 
     class COptionSelectable : public COption {
@@ -54,11 +56,11 @@ class COption {
     };
 
         class COptionRadioGroup : public COptionSelectable {
-            virtual QList<QWidget*> render(QWidget *parent = nullptr) const;
+            virtual QList<QWidget*> render(QWidget *parent = nullptr);
         };
 
         class COptionSelectBox : public COptionSelectable {
-            virtual QList<QWidget*> render(QWidget *parent = nullptr) const;
+            virtual QList<QWidget*> render(QWidget *parent = nullptr);
         };
 
 #endif // COPTION_HPP

@@ -10,19 +10,6 @@ SProjectTypeInfo CProjectTypeXmlFileReader::getProjectTypeInfo() const {
     return _project_type_info;
 }
 
-QString SProjectTypeInfo::print() const {
-    QString result = "Name: " + _name + "\nTechnologies:\n";
-    for (auto t : _technologies) {
-        result += "   " + t + "\n";
-    }
-
-    result += "Options:\n";
-    for (auto o : _options) {
-        result += o->print();
-    }
-    return result;
-}
-
 void CProjectTypeXmlFileReader::parseNode(const QDomNode &node) {
     if (node.isElement()) {
         QDomElement element = node.toElement();

@@ -47,12 +47,12 @@ COption *COption::getOptionPerType(const QString &type_name) {
     return nullptr;
 }
 
-QList<QWidget*> COption::render(QWidget *parent) const {
-    QList<QWidget*> list;
+QList<QWidget*> COption::render(QWidget *parent) {
+    this->_widgets.clear();
     if (this->_name != "") {
-        list.push_back(new QLabel(this->_name, parent));
+        this->_widgets.push_back(new QLabel(this->_name, parent));
     }
-    return list;
+    return this->_widgets;
 }
 
 void COptionCheckbox::fill(const QDomNode &node) {
@@ -73,19 +73,23 @@ void COptionCheckbox::fill(const QDomNode &node) {
     }
 }
 
-QList<QWidget *> COptionCheckbox::render(QWidget *parent) const {
-    QList<QWidget*> list = COption::render(parent);
+QList<QWidget *> COptionCheckbox::render(QWidget *parent) {
+    this->_widgets = COption::render(parent);
 
     QCheckBox *checkbox = new QCheckBox(this->_label, parent);
     if (this->_is_checked) {
         checkbox->setChecked(true);
     }
-    list.push_back(checkbox);
+    this->_widgets.push_back(checkbox);
 
-    return list;
+    return this->_widgets;
 }
 
-QList<QWidget *> COptionTextInput::render(QWidget *parent) const {
+QString COptionCheckbox::value() const {
+    return QString("--" + this->_name + "=");
+}
+
+QList<QWidget *> COptionTextInput::render(QWidget *parent) {
     QList<QWidget*> list = COption::render(parent);
     list.append(new QLineEdit(parent));
     return list;
@@ -122,7 +126,7 @@ void COptionSelectable::fillValue(const QDomNode &node) {
     }
 }
 
-QList<QWidget *> COptionRadioGroup::render(QWidget *parent) const {
+QList<QWidget *> COptionRadioGroup::render(QWidget *parent) {
     QList<QWidget*> list;
 
     auto container = new QGroupBox(this->_name, parent);
@@ -143,7 +147,7 @@ QList<QWidget *> COptionRadioGroup::render(QWidget *parent) const {
     return list;
 }
 
-QList<QWidget *> COptionSelectBox::render(QWidget *parent) const {
+QList<QWidget *> COptionSelectBox::render(QWidget *parent) {
     QList<QWidget*> list = COption::render(parent);
 
     auto *combo = new QComboBox(parent);
