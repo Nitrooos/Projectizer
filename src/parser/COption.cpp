@@ -17,12 +17,6 @@ const QMap<QString, COption::EType> COption::mapping = {
     {"selectbox", COption::EType::SELECT}
 };
 
-QString CValue::print() const {
-    return "      id: " + _id +
-           "      label: " + _label +
-           "      is_default: " + QString::number(_is_default) + "\n";
-}
-
 void COption::fill(const QDomNode &node) {
     if (node.isElement()) {
         QDomNodeList names = node.toElement().elementsByTagName("name"),
@@ -34,10 +28,6 @@ void COption::fill(const QDomNode &node) {
             _id = ids.item(0).toElement().text();
         }
     }
-}
-
-QString COption::print() const {
-    return "   name: "  + _name + "\n";
 }
 
 COption *COption::getOptionPerType(const QString &type_name) {
@@ -95,12 +85,6 @@ QList<QWidget *> COptionCheckbox::render(QWidget *parent) const {
     return list;
 }
 
-QString COptionCheckbox::print() const {
-    return COption::print() +
-           "   label: " + _label + "\n" +
-           "   is_checked: " +  QString::number(_is_checked) + "\n";
-}
-
 QList<QWidget *> COptionTextInput::render(QWidget *parent) const {
     QList<QWidget*> list = COption::render(parent);
     list.append(new QLineEdit(parent));
@@ -136,14 +120,6 @@ void COptionSelectable::fillValue(const QDomNode &node) {
 
         _values.insert(id, CValue(id, label, is_default));
     }
-}
-
-QString COptionSelectable::print() const {
-    QString result = COption::print() + "   values:\n";
-    for (auto value : _values) {
-        result += value.print();
-    }
-    return result;
 }
 
 QList<QWidget *> COptionRadioGroup::render(QWidget *parent) const {
