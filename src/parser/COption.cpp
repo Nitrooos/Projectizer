@@ -92,7 +92,7 @@ QString COptionCheckbox::value() const {
     }
 
     QString val = this->_created_checkbox->isChecked() ? "1" : "0";
-    return QString("--" + this->_name + "=" + val);
+    return QString("--" + this->_id + "=" + val);
 }
 
 QList<QWidget *> COptionTextInput::render(QWidget *parent) {
@@ -110,7 +110,7 @@ QString COptionTextInput::value() const {
         return "";
     }
 
-    return QString("--" + this->_name + "=" + this->_created_input->text());
+    return QString("--" + this->_id + "=\"" + this->_created_input->text() + "\"");
 }
 
 void COptionSelectable::fill(const QDomNode &node) {
@@ -173,7 +173,7 @@ QString COptionRadioGroup::value() const {
         return "";
     }
 
-    return QString("--" + this->_name + "=" + this->_created_group->checkedButton()->objectName());
+    return QString("--" + this->_id + "=" + this->_created_group->checkedButton()->objectName());
 }
 
 QList<QWidget *> COptionSelectBox::render(QWidget *parent) {
@@ -199,5 +199,5 @@ QString COptionSelectBox::value() const {
         return "";
     }
 
-    return QString("--" + this->_name + "=" + this->_created_select->currentText());
+    return QString("--" + this->_id + "=" + this->_created_select->currentText());
 }

@@ -54,12 +54,17 @@ void CNewProjectWindow::keyPressEvent(QKeyEvent *event) {
  * Private slots
  */
 
+#include <iostream>
 void CNewProjectWindow::createNewProject() {
     if (this->_activeProjectItem == nullptr) {
         return;
     }
 
-
+    QStringList params;
+    for (auto o : this->_activeProjectItem->getProjectTypeInfo()._options) {
+        params << o->value();
+        std::cout << o->value().toStdString() << "\n";
+    }
 }
 
 void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) {
