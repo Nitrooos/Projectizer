@@ -80,19 +80,37 @@ QList<QWidget *> COptionCheckbox::render(QWidget *parent) {
     if (this->_is_checked) {
         checkbox->setChecked(true);
     }
+    this->_created_checkbox = checkbox;
     this->_widgets.push_back(checkbox);
 
     return this->_widgets;
 }
 
 QString COptionCheckbox::value() const {
-    return QString("--" + this->_name + "=");
+    if (this->_created_checkbox == nullptr) {
+        return "";
+    }
+
+    QString val = this->_created_checkbox->isChecked() ? "1" : "0";
+    return QString("--" + this->_name + "=" + val);
 }
 
 QList<QWidget *> COptionTextInput::render(QWidget *parent) {
-    QList<QWidget*> list = COption::render(parent);
-    list.append(new QLineEdit(parent));
-    return list;
+    this->_widgets = COption::render(parent);
+
+    auto input = new QLineEdit(parent);
+    this->_created_input = input;
+    this->_widgets.append(input);
+
+    return this->_widgets;
+}
+
+QString COptionTextInput::value() const {
+    if (this->_created_input == nullptr) {
+        return "";
+    }
+
+    return QString("--" + this->_name + "=" + this->_created_input->text());
 }
 
 void COptionSelectable::fill(const QDomNode &node) {
@@ -127,28 +145,39 @@ void COptionSelectable::fillValue(const QDomNode &node) {
 }
 
 QList<QWidget *> COptionRadioGroup::render(QWidget *parent) {
-    QList<QWidget*> list;
+    this->_widgets = COption::render(parent);
 
     auto container = new QGroupBox(this->_name, parent);
     container->setLayout(new QVBoxLayout(container));
     container->layout()->setContentsMargins(0, 5, 0, 0);
 
-    QButtonGroup btn_group(container);
+    auto *btn_group = new QButtonGroup(container);
     for (auto radio_option : this->_values) {
         auto radio = new QRadioButton(radio_option._label, container);
-        btn_group.addButton(radio);
+        radio->setObjectName(radio_option._id);
+
+        btn_group->addButton(radio);
         container->layout()->addWidget(radio);
         if (radio_option._is_default) {
             radio->setChecked(true);
         }
     }
-    list.push_back(container);
+    this->_created_group = btn_group;
+    this->_widgets.push_back(container);
 
-    return list;
+    return this->_widgets;
+}
+
+QString COptionRadioGroup::value() const {
+    if (this->_created_group == nullptr) {
+        return "";
+    }
+
+    return QString("--" + this->_name + "=" + this->_created_group->checkedButton()->objectName());
 }
 
 QList<QWidget *> COptionSelectBox::render(QWidget *parent) {
-    QList<QWidget*> list = COption::render(parent);
+    this->_widgets = COption::render(parent);
 
     auto *combo = new QComboBox(parent);
     for (auto combo_option : this->_values) {
@@ -159,7 +188,16 @@ QList<QWidget *> COptionSelectBox::render(QWidget *parent) {
             combo->addItem(combo_option._label);
         }
     }
-    list.push_back(combo);
+    this->_created_select = combo;
+    this->_widgets.push_back(combo);
 
-    return list;
+    return this->_widgets;
+}
+
+QString COptionSelectBox::value() const {
+    if (this->_created_select == nullptr) {
+        return "";
+    }
+
+    return QString("--" + this->_name + "=" + this->_created_select->currentText());
 }

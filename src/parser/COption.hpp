@@ -8,6 +8,10 @@
 class QHBoxLayout;
 class QVBoxLayout;
 class QWidget;
+class QCheckBox;
+class QLineEdit;
+class QButtonGroup;
+class QComboBox;
 
 struct CValue {
     public:
@@ -40,11 +44,15 @@ class COption {
         protected:
             QString _label;
             bool _is_checked;
+            QCheckBox *_created_checkbox{nullptr};
     };
 
     class COptionTextInput : public COption {
         public:
             virtual QList<QWidget*> render(QWidget *parent = nullptr);
+            virtual QString value() const;
+        protected:
+            QLineEdit *_created_input{nullptr};
     };
 
     class COptionSelectable : public COption {
@@ -56,11 +64,17 @@ class COption {
     };
 
         class COptionRadioGroup : public COptionSelectable {
-            virtual QList<QWidget*> render(QWidget *parent = nullptr);
+                virtual QList<QWidget*> render(QWidget *parent = nullptr);
+                virtual QString value() const;
+            protected:
+                QButtonGroup *_created_group{nullptr};
         };
 
         class COptionSelectBox : public COptionSelectable {
-            virtual QList<QWidget*> render(QWidget *parent = nullptr);
+                virtual QList<QWidget*> render(QWidget *parent = nullptr);
+                virtual QString value() const;
+            protected:
+                QComboBox *_created_select{nullptr};
         };
 
 #endif // COPTION_HPP

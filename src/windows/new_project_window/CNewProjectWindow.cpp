@@ -69,7 +69,7 @@ void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, con
     this->_activeProjectItem = static_cast<CProjectTypeItem*>(selected.indexes().first().internalPointer());
 
     this->_layout_manager->clearMainLayout();
-    for (auto option : selected_project_type->getProjectTypeInfo()._options) {
+    for (auto option : this->_activeProjectItem->getProjectTypeInfo()._options) {
         // dodawaj kolejne opcje (każda składa się z listy Widget'ów
         this->_layout_manager->addLayoutWithWidgets(option->render(ui->layoutOptionsWidget));
     }
