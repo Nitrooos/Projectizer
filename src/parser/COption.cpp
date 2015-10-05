@@ -145,7 +145,7 @@ void COptionSelectable::fillValue(const QDomNode &node) {
 }
 
 QList<QWidget *> COptionRadioGroup::render(QWidget *parent) {
-    this->_widgets = COption::render(parent);
+    this->_widgets = QList<QWidget*>();
 
     auto container = new QGroupBox(this->_name, parent);
     container->setLayout(new QVBoxLayout(container));
