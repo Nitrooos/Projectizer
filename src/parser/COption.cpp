@@ -140,7 +140,7 @@ void COptionSelectable::fillValue(const QDomNode &node) {
             is_default = true;
         }
 
-        _values.insert(id, CValue(id, label, is_default));
+        _values.insert(label, CValue(id, label, is_default));
     }
 }
 
@@ -199,5 +199,7 @@ QString COptionSelectBox::value() const {
         return "";
     }
 
-    return QString("--" + this->_id + "=" + this->_created_select->currentText());
+    QString option_id = this->_values[this->_created_select->currentText()]._id;
+
+    return QString("--" + this->_id + "=" + option_id);
 }

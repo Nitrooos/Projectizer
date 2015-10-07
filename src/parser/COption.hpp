@@ -15,6 +15,7 @@ class QComboBox;
 
 struct CValue {
     public:
+        CValue() : _id("default"), _label(""), _is_default(false) { }
         CValue(QString id, QString label, bool is_default)
             : _id(id), _label(label), _is_default(is_default) { }
 

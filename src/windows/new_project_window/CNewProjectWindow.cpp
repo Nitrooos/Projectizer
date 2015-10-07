@@ -63,8 +63,9 @@ void CNewProjectWindow::createNewProject() {
     QStringList params;
     for (auto o : this->_activeProjectItem->getProjectTypeInfo()._options) {
         params << o->value();
-        std::cout << o->value().toStdString() << "\n";
     }
+
+    std::cout << params.join(' ').toStdString() << "\n";
 }
 
 void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) {
