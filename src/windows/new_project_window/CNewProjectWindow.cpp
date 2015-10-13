@@ -64,7 +64,18 @@ void CNewProjectWindow::createNewProject() {
     for (auto o : this->_activeProjectItem->getProjectTypeInfo()._options) {
         params << o->value();
     }
+/*
+    QProcess script_process;
+    QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleProcessError(QProcess::ProcessError)));
 
+    script_process.setWorkingDirectory();
+    script_process.start();
+
+    if (script_process.waitForFinished()) {
+        emit scriptRunSuccessfully();
+    }
+*/
+    std::cout << this->_activeProjectItem->getProjectTypeInfo()._create_script_path.toStdString() << "\n";
     std::cout << params.join(' ').toStdString() << "\n";
 }
 
