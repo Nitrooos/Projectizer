@@ -66,7 +66,7 @@ void CNewProjectWindow::createNewProject() {
     }
 
     SProjectTypeInfo info = this->_activeProjectItem->getProjectTypeInfo();
-    CScriptExecutor script(info._create_script_dir + "/create.sh", params, info._create_script_dir);
+    CScriptExecutor script(info._create_script_dir + "/create.sh", params, this->_directory);
     if (script.execute()) {
         close();
     }
