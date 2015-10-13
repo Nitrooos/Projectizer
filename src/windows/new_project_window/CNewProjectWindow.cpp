@@ -8,6 +8,7 @@
 #include <QTreeView>
 #include <QKeyEvent>
 #include <QLayout>
+#include <QProcess>
 
 CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::NewProjectWindow),  _directory(directory), _model(new CProjectTypeModel()),
@@ -64,19 +65,17 @@ void CNewProjectWindow::createNewProject() {
     for (auto o : this->_activeProjectItem->getProjectTypeInfo()._options) {
         params << o->value();
     }
-/*
-    QProcess script_process;
-    QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleProcessError(QProcess::ProcessError)));
 
-    script_process.setWorkingDirectory();
-    script_process.start();
+    SProjectTypeInfo info = this->_activeProjectItem->getProjectTypeInfo();
+    QProcess script_process;
+    //QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleProcessError(QProcess::ProcessError)));
+
+    script_process.setWorkingDirectory(info._create_script_dir);
+    script_process.start(info._create_script_dir + "/create.sh", params);
 
     if (script_process.waitForFinished()) {
-        emit scriptRunSuccessfully();
+        close();
     }
-*/
-    std::cout << this->_activeProjectItem->getProjectTypeInfo()._create_script_path.toStdString() << "\n";
-    std::cout << params.join(' ').toStdString() << "\n";
 }
 
 void CNewProjectWindow::buildTemplateOptions(const QItemSelection &selected, const QItemSelection &deselected) {

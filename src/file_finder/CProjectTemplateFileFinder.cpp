@@ -35,7 +35,7 @@ void CProjectTemplateFileFinder::findTemplatesInDirectory(QDir directory, CProje
         }
 
         info._name = entry.baseName();
-        info._create_script_path = entry.absoluteFilePath() + "/create.sh";
+        info._create_script_dir = entry.absoluteFilePath();
         auto next_parent = new CProjectTypeItem(info, current_parent);
         current_parent->appendChild(next_parent);
         entries.push_back(qMakePair(entry, next_parent));

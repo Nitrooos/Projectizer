@@ -7,7 +7,7 @@
 #include <QList>
 
 struct SProjectTypeInfo {
-    QString _name, _create_script_path;
+    QString _name, _create_script_dir;
     QList<QString> _technologies;
     QList<COption*> _options;
 
