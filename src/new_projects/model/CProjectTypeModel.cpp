@@ -2,7 +2,7 @@
 #include "src/new_projects/model/CProjectTypeItem.hpp"
 
 CProjectTypeModel::CProjectTypeModel(QObject *parent) : QAbstractItemModel(parent) {
-    this->_root_item = new CProjectTypeItem(SProjectTypeInfo{"root", {}, {nullptr}});
+    this->_root_item = new CProjectTypeItem(SProjectTypeInfo{"root", "", {}, {nullptr}});
 }
 
 CProjectTypeModel::~CProjectTypeModel() {
