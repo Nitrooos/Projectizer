@@ -30,7 +30,8 @@ SOURCES += src/main.cpp\
     src/file_finder/CProjectTemplateFileFinder.cpp \
     src/new_projects/model/CProjectTypeModel.cpp \
     src/new_projects/model/CProjectTypeItem.cpp \
-    src/new_projects/options_layout/CLayoutManager.cpp
+    src/new_projects/options_layout/CLayoutManager.cpp \
+    src/common/CScriptExecutor.cpp
 
 HEADERS  += \
     src/windows/main_window/CMainWindow.hpp \
@@ -49,8 +50,8 @@ HEADERS  += \
     src/file_finder/CProjectTemplateFileFinder.hpp \
     src/new_projects/model/CProjectTypeItem.hpp \
     src/new_projects/model/CProjectTypeModel.hpp \
-    src/layout_renderer/ARenderer.hpp \
-    src/new_projects/options_layout/CLayoutManager.hpp
+    src/new_projects/options_layout/CLayoutManager.hpp \
+    src/common/CScriptExecutor.hpp
 
 FORMS    += ui/MainWindow.ui \
     ui/ConfigureProjectDialog.ui \

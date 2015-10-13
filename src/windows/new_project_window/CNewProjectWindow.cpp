@@ -1,6 +1,7 @@
 #include "CNewProjectWindow.hpp"
 #include "ui_NewProjectWindow.h"
 
+#include "src/common/CScriptExecutor.hpp"
 #include "src/file_finder/CProjectTemplateFileFinder.hpp"
 #include "src/new_projects/model/CProjectTypeItem.hpp"
 #include "src/CConstants.hpp"
@@ -8,7 +9,6 @@
 #include <QTreeView>
 #include <QKeyEvent>
 #include <QLayout>
-#include <QProcess>
 
 CNewProjectWindow::CNewProjectWindow(const QString &directory, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::NewProjectWindow),  _directory(directory), _model(new CProjectTypeModel()),
@@ -55,7 +55,6 @@ void CNewProjectWindow::keyPressEvent(QKeyEvent *event) {
  * Private slots
  */
 
-#include <iostream>
 void CNewProjectWindow::createNewProject() {
     if (this->_activeProjectItem == nullptr) {
         return;
@@ -67,13 +66,8 @@ void CNewProjectWindow::createNewProject() {
     }
 
     SProjectTypeInfo info = this->_activeProjectItem->getProjectTypeInfo();
-    QProcess script_process;
-    //QObject::connect(&script_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleProcessError(QProcess::ProcessError)));
-
-    script_process.setWorkingDirectory(info._create_script_dir);
-    script_process.start(info._create_script_dir + "/create.sh", params);
-
-    if (script_process.waitForFinished()) {
+    CScriptExecutor script(info._create_script_dir + "/create.sh", params, info._create_script_dir);
+    if (script.execute()) {
         close();
     }
 }
